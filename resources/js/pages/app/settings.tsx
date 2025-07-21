@@ -1,7 +1,9 @@
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import Level from './level';
-import { Cog, LineChart, Settings2 } from 'lucide-react';
+import { Cog} from 'lucide-react';
+import Subjects from './subjects';
+import Departments from './departments';
 
 export default function Settings() {
     return (
@@ -28,7 +30,9 @@ export default function Settings() {
                             <Cog className="" size={15} /> <p>Level </p>
                         </div>
                     </div>
-                    <Level />
+                    {/* <Level /> */} 
+                    {/* <Subjects/> */}
+                    <Departments/>
                 </div>
             </AuthLayout>
         </AppLayout>
