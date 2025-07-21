@@ -45,4 +45,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    /**
+     * Get the student associated with the user.
+     */
+    public function student()
+    {
+        return $this->hasMany(Student::class, 'user_id');
+    }
+    /**
+     * Get the books created by the user.
+     */
+    public function books()
+    {
+        return $this->hasMany(Book::class, 'created_by');
+    }
+    /**
+     * Get the books updated by the user.
+     */
+    public function updatedBooks()
+    {
+        return $this->hasMany(Book::class, 'updated_by');
+    }
 }
