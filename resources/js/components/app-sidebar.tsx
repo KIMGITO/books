@@ -1,56 +1,175 @@
-import { NavFooter } from '@/components/nav-footer';
+'use client';
+
+import { AudioWaveform, BookOpen, BookPlus, Bot, ChartSpline, Command, File, Files, FileSearch, FileStack, Frame, GalleryVerticalEnd, Group, Languages, Map, PieChart, PieChartIcon, School, ScrollText, Settings2, SquareTerminal, User2, UserCircle2, UserRoundPen, UserRoundPlus, Users } from 'lucide-react';
+import * as React from 'react';
+
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
-import AppLogo from './app-logo';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
+import { title } from 'process';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutGrid,
-    },
-];
+// This is sample data.
+const data = {
+   
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
+    navMain: [
+        {
+            title: 'Dashboard',
+            url: '#',
+            icon: Users,
+            isActive: true,
+            items: [
+                {
+                    title: 'Overview',
+                    url: '#',
+                    icon: PieChartIcon,
+                },
 
-export function AppSidebar() {
+                {
+                    title: 'Teachers',
+                    url: '#',
+                    icon: User2,
+                },
+                {
+                    title: 'Students',
+                    url: '#',
+                    icon: UserCircle2,
+                },
+                {
+                    title: 'Books',
+                    url: '#',
+                    icon: BookOpen,
+                },
+            ],
+        },
+        {
+            title: 'Activities',
+            url: '#',
+            icon: Bot,
+            items: [
+                {
+                    title: 'Register Book',
+                    url: '#',
+                    icon: BookPlus,
+                },
+                {
+                    title: 'Register Teacher',
+                    url: '#',
+                    icon: UserRoundPlus,
+                },
+                {
+                    title: 'Register Student',
+                    url: '#',
+                    icon: UserRoundPen,
+                },
+
+                {
+                    title: 'Issue Book',
+                    url: '#',
+                    icon: GalleryVerticalEnd,
+                },
+                {
+                    title: 'Return book',
+                    url: '#',
+                    icon: AudioWaveform,
+                },
+            ],
+        },
+        {
+            title: 'Reports',
+            url: '#',
+            icon: File,
+            items: [
+                {
+                    title: 'Book List Doc ',
+                    url: '#',
+                    icon: ScrollText,
+                },
+                {
+                    title: 'Issue books Doc',
+                    url: '#',
+                    icon: Files,
+                },
+                {
+                    title: 'Due Books Doc',
+                    url: '#',
+                    icon: FileStack,
+                },
+                {
+                    title: 'Defaulters Doc',
+                    url: '#',
+                    icon: FileSearch,
+                },
+            ],
+        },
+        {
+            title: 'Settings',
+            url: '#',
+            icon: Settings2,
+            items: [
+                {
+                    title: 'Departments',
+                    url: '#',
+                    icon: Group,
+                },
+                {
+                    title: 'Subjects',
+                    url: '#',
+                    icon: Languages,
+                },
+                {
+                    title: 'Levels',
+                    url: '#',
+                    icon: ChartSpline,
+                },
+                {
+                    title: 'Classes',
+                    url: '#',
+                    icon: School,
+                },
+            ],
+        },
+    ],
+    projects: [
+        {
+            name: 'Design Engineering',
+            url: '#',
+            icon: Frame,
+        },
+        {
+            name: 'Sales & Marketing',
+            url: '#',
+            icon: PieChart,
+        },
+        {
+            name: 'Travel',
+            url: '#',
+            icon: Map,
+        },
+    ],
+};
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const user = {
+        name: 'shadcn',
+        email: 'm@example.com',
+        avatar: '/avatars/shadcn.jpg',
+    }; 
+
+
     return (
-        <Sidebar collapsible="icon" variant="inset">
+        <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
-                                <AppLogo />
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                </SidebarMenu>
+                {/* <TeamSwitcher teams={data.teams} /> */}
             </SidebarHeader>
-
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={data.navMain} />
+                {/* <NavProjects projects={data.projects} /> */}
             </SidebarContent>
-
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
-                <NavUser />
+                <NavUser user={user} />
             </SidebarFooter>
+            <SidebarRail />
         </Sidebar>
     );
 }
