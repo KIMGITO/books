@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('middle_name')->nullable();
             $table->string('email')->unique();
             $table->string('phone')->nullable()->unique();
-            $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
-            $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreignId('department_id')->constrained('departments')->onDelete('set null');
+            $table->foreignId('created_by')->constrained('users')->onDelete('set null');
+            $table->foreignId('updated_by')->constrained('users')->onDelete('set null');
 
         });
     }

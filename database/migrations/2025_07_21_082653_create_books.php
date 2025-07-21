@@ -14,6 +14,13 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('title');
+            $table->string('level');
+            $table->string('cover_image')->nullable();
+            $table->foreignId('subject_id')->constrained('subjects')->onDelete('set null');
+            $table->foreignId('created_by')->constrained('users')->onDelete('set null');
+            $table->foreignId('updated_by')->constrained('users')->onDelete('set null');
+            $table->index(['created_by', 'updated_by'], 'books_user_index');
         });
     }
 

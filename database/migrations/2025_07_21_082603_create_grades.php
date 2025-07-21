@@ -16,10 +16,10 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name')->unique();
             $table->string('level')->nullable();
-            $table->foreign('teacher_id')->nullable();
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
-            $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
-            $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('set null');
+            $table->foreignId('teacher_id')->nullable();
+            $table->foreignId('created_by')->constrained('users')->onDelete('set null');
+            $table->foreignId('updated_by')->constrained('users')->onDelete('set null');
+            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('set null');
             
 
 

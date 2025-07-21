@@ -14,6 +14,14 @@ return new class extends Migration
         Schema::create('books_students', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->date('issued_at')->nullable();
+            $table->date('returned_at')->nullable();
+        
+            $table->foreignId('book_id')->constrained('books')->onDelete('cascade');
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->foreignId('created_by')->constrained('users')->onDelete('set null');
+            $table->foreignId('updated_by')->constrained('users')->onDelete('set null');
+            $table->index(['created_by', 'updated_by'], 'books_students_user_index');
         });
     }
 
