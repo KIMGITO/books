@@ -1,6 +1,12 @@
 <?php
 
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\TeacherController;
 use App\Models\Book;
 use Inertia\Inertia;
 use App\Models\Grade;
@@ -21,12 +27,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('/levels', LevelController::class);
-    Route::resource('/grades', Grade::class);
-    Route::resource('/departments',Department::class);
-    Route::resource('/subjects', Subject::class);
-    Route::resource('/books', Book::class);
-    Route::resource('/teachers', Teacher::class);
-    Route::resource('/students', Student::class);
+    Route::resource('/grades', GradeController::class);
+    Route::resource('/departments',DepartmentController::class);
+    Route::resource('/subjects', SubjectController::class);
+    Route::resource('/books', BookController::class);
+    Route::resource('/teachers', TeacherController::class);
+    Route::resource('/students', StudentController::class);
 });
 
 require __DIR__.'/settings.php';

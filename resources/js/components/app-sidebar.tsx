@@ -108,7 +108,7 @@ const data = {
             items: [
                 {
                     title: 'Departments',
-                    url: '#',
+                    url: '/departments',
                     icon: Group,
                 },
                 {

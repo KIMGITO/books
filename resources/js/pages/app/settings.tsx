@@ -16,7 +16,13 @@ export default function Settings() {
                             <Cog className="" size={15} /> <p>Level </p>
                         </div>
                         <div
-                            className="flex justify-between gap-1 rounded-md border-1 border-purple-600 bg-secondary px-2 py-1 align-baseline text-xs text-purple-400"
+                            className="flex justify-between gap-4 mx-4 border-b-2 border-b-green-900 bg-secondary px-2 py-1 align-baseline text-xs text-green-400"
+                            onClick={() => {}}
+                        >
+                            <Cog className="animate-spin" size={15} /> <p>Level </p>
+                        </div>
+                        <div
+                            className="flex justify-between gap-4 rounded-md border-1 border-purple-600 bg-secondary px-2 py-1 align-baseline text-xs text-purple-400"
                             onClick={() => {}}
                         >
                             <Cog className="" size={15} /> <p>Level </p>
