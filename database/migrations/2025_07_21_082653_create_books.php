@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('title');
             $table->string('level');
             $table->string('cover_image')->nullable();
-            $table->foreignId('subject_id')->constrained('subjects')->onDelete('set null');
-            $table->foreignId('created_by')->constrained('users')->onDelete('set null');
-            $table->foreignId('updated_by')->constrained('users')->onDelete('set null');
+            $table->foreignId('subject_id')->nullable()-> constrained('subjects')->onDelete('set null');
+            $table->foreignId('created_by')->nullable()-> constrained('users')->onDelete('set null');
+            $table->foreignId('updated_by')->nullable()-> constrained('users')->onDelete('set null');
             $table->index(['created_by', 'updated_by'], 'books_user_index');
         });
     }

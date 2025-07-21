@@ -16,9 +16,9 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name')->unique();
             $table->string('code')->unique();
-            $table->foreignId('teacher_id')->nullable()->constrained('teachers')->onDelete('set null');
-            $table->foreignId('created_by')->constrained('users')->onDelete('set null');
-            $table->foreignId('updated_by')->constrained('users')->onDelete('set null');
+            $table->foreignId('teacher_id')->nullable()->nullable()-> constrained ('teachers')->onDelete('set null');
+            $table->foreignId('created_by')->nullable()-> constrained ('users')->onDelete('set null');
+            $table->foreignId('updated_by')->nullable()-> constrained ('users')->onDelete('set null');
             $table->index(['created_by', 'updated_by'], 'subjects_user_index');
         });
     }

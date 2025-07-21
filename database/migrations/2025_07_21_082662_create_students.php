@@ -11,19 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('book_student', function (Blueprint $table) {
+        Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-
-            $table->date('issued_at')->nullable();
-            $table->date('returned_at')->nullable();
-
-            $table->foreignId('book_id')->nullable()->constrained('books')->onDelete('set null');
-            $table->foreignId('student_id')->nullable()->constrained('students')->onDelete('set null');
+         
+            $table->string('first_name');
+            $table->string('middle_name')->nullable();
+            $table->string('sir_name');
+            $table->string('adm_no')->unique();
+            $table->foreignId('grade_id')->nullable()->constrained('grades')->onDelete('set null');
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null');
 
-            // $table->index(['created_by', 'updated_by'], 'book_student_user_index');
+            $table->index(['created_by', 'updated_by'], 'students_user_index');
+            
         });
     }
 
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('book_student');
+        Schema::dropIfExists('students');
     }
 };

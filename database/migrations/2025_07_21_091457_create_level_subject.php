@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('levels_subjects', function (Blueprint $table) {
+        Schema::create('level_subject', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('level_id')->constrained('levels')->onDelete('cascade');
-            $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
-            $table->foreignId('created_by')->constrained('users')->onDelete('set null');
-            $table->foreignId('updated_by')->constrained('users')->onDelete('set null');
+            $table->foreignId('level_id')->nullable()-> constrained('levels')->onDelete('set null');
+            $table->foreignId('subject_id')->nullable()-> constrained('subjects')->onDelete('set null');
+            $table->foreignId('created_by')->nullable()-> constrained('users','id')->onDelete('set null');
+            $table->foreignId('updated_by')->nullable()-> constrained('users','id')->onDelete('set null');
             $table->unique(['level_id', 'subject_id'], 'unique_level_subject');
             $table->index(['created_by', 'updated_by'], 'level_subject_user_index');
             
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('levels_subjects');
+        Schema::dropIfExists('level_subject');
     }
 };
