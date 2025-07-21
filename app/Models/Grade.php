@@ -10,7 +10,6 @@ class Grade extends Model
         'name',
         'level',
         'teacher_id',
-        'description',
         'created_by',
         'updated_by',
     ];
@@ -28,8 +27,8 @@ class Grade extends Model
     }
     public function teacher()
     {
-        return $this->belongsTo(Teacher::class, 'teacher_id');
+        return $this->HasOne(Teacher::class, 'teacher_id');
     }
-    
+
 
 }
