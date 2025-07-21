@@ -46,7 +46,7 @@ export default function Level() {
                                 <Input placeholder="e.g 1" id="level" type="number" />
                             </div>
                             <div className="grid gap-2">
-                                <Label htmlFor="level"> Note {'(optional)'}</Label>
+                                <Label htmlFor="note"> Note {'(optional)'}</Label>
                                 <Textarea placeholder="e.g This is the first level" id="note" rows={3} />
                             </div>
 
