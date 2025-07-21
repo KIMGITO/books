@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->foreignId('created_by')->constrained('users')->onDelete('set null');
             $table->foreignId('updated_by')->constrained('users')->onDelete('set null');
-            $table->index(['created_by', 'updated_by'], 'books_students_user_index');
+            $table->index(['created_by', 'updated_by'], 'book_student_user_index');
         });
     }
 

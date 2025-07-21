@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('created_by')->constrained('users')->onDelete('set null');
             $table->foreignId('updated_by')->constrained('users')->onDelete('set null');
             $table->unique(['level_id', 'subject_id'], 'unique_level_subject');
-            $table->index(['created_by', 'updated_by'], 'levels_subjects_user_index');
+            $table->index(['created_by', 'updated_by'], 'level_subject_user_index');
             
         });
     }
