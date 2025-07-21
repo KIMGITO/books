@@ -118,7 +118,7 @@ const data = {
                 },
                 {
                     title: 'Levels',
-                    url: '#',
+                    url: '/levels',
                     icon: ChartSpline,
                 },
                 {

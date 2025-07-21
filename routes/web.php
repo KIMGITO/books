@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LevelController;
 use App\Models\Book;
 use Inertia\Inertia;
 use App\Models\Grade;
@@ -19,7 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    Route::resource('/levels', Level::class);
+    Route::resource('/levels', LevelController::class);
     Route::resource('/grades', Grade::class);
     Route::resource('/departments',Department::class);
     Route::resource('/subjects', Subject::class);
