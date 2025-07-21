@@ -1,12 +1,11 @@
 'use client';
 
-import { AudioWaveform, BookOpen, BookPlus, Bot, ChartSpline, Command, File, Files, FileSearch, FileStack, Frame, GalleryVerticalEnd, Group, Languages, Map, PieChart, PieChartIcon, School, ScrollText, Settings2, SquareTerminal, User2, UserCircle2, UserRoundPen, UserRoundPlus, Users } from 'lucide-react';
+import { AudioWaveform, BookOpen, BookPlus, Bot, ChartSpline, File, Files, FileSearch, FileStack, Frame, GalleryVerticalEnd, Group, Languages, Map, PieChart, PieChartIcon, School, ScrollText, Settings2, SquareTerminal, User2, UserCircle2, UserRoundPen, UserRoundPlus, Users } from 'lucide-react';
 import * as React from 'react';
 
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
-import { title } from 'process';
 
 // This is sample data.
 const data = {
