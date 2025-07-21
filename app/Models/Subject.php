@@ -36,4 +36,9 @@ class Subject extends Model
     {
         return $this->hasMany(Book::class);
     }
+    public function levels()
+    {
+        return $this->belongsToMany(Level::class, 'level_subject', 'subject_id', 'level_id')
+                    ->withTimestamps();
+    }
 }

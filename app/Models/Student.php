@@ -12,7 +12,7 @@ class Student extends Model
         'middle_name',
         'sir_name',
         'adm_no',
-        'class_id',
+        'grade_id',
         'created_by',
         'updated_by'
 

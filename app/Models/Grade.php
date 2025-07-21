@@ -8,7 +8,7 @@ class Grade extends Model
 {
     protected $fillable = [
         'name',
-        'level',
+        'level_id',
         'teacher_id',
         'created_by',
         'updated_by',
@@ -28,6 +28,10 @@ class Grade extends Model
     public function teacher()
     {
         return $this->HasOne(Teacher::class, 'teacher_id');
+    }
+    public function level()
+    {
+        return $this->belongsTo(Level::class);
     }
 
 
