@@ -123,7 +123,7 @@ const data = {
                 },
                 {
                     title: 'Classes',
-                    url: '#',
+                    url: '/grades',
                     icon: School,
                 },
             ],

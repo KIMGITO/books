@@ -4,6 +4,7 @@ import Level from './level';
 import { Cog} from 'lucide-react';
 import Subjects from './subjects';
 import Departments from './departments';
+import Classes from './classes';
 
 export default function Settings() {
     return (
@@ -31,8 +32,9 @@ export default function Settings() {
                         </div>
                     </div>
                     {/* <Level /> */} 
-                    {/* <Subjects/> */}
-                    <Departments/>
+                    <Subjects/>
+                    {/* <Departments/> */}
+                    {/* <Classes/> */}
                 </div>
             </AuthLayout>
         </AppLayout>
