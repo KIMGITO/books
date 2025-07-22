@@ -53,7 +53,7 @@ const data = {
                 },
                 {
                     title: 'Register Teacher',
-                    url: '#',
+                    url: '/teachers/create',
                     icon: UserRoundPlus,
                 },
                 {
