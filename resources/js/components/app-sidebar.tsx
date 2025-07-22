@@ -1,6 +1,6 @@
 'use client';
 
-import { AudioWaveform, BookOpen, BookPlus, Bot, ChartSpline, File, Files, FileSearch, FileStack, Frame, GalleryVerticalEnd, Group, Languages, Map, PieChart, PieChartIcon, School, ScrollText, Settings2, SquareTerminal, User2, UserCircle2, UserRoundPen, UserRoundPlus, Users } from 'lucide-react';
+import { ArrowDownLeft, ArrowUpRight, AudioWaveform, BookOpen, BookPlus, Bot, ChartSpline, File, Files, FileSearch, FileStack, Frame, GalleryVerticalEnd, Group, Languages, Map, PieChart, PieChartIcon, School, ScrollText, Settings2, SquareTerminal, User2, UserCircle2, UserRoundPen, UserRoundPlus, Users } from 'lucide-react';
 import * as React from 'react';
 
 import { NavMain } from '@/components/nav-main';
@@ -58,19 +58,19 @@ const data = {
                 },
                 {
                     title: 'Register Student',
-                    url: '#',
+                    url: '/students/create',
                     icon: UserRoundPen,
                 },
 
                 {
                     title: 'Issue Book',
                     url: '#',
-                    icon: GalleryVerticalEnd,
+                    icon: ArrowUpRight,
                 },
                 {
                     title: 'Return book',
                     url: '#',
-                    icon: AudioWaveform,
+                    icon: ArrowDownLeft,
                 },
             ],
         },
