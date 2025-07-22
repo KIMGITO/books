@@ -33,7 +33,13 @@ export default function Settings() {
                     </div>
                     {/* <Level /> */} 
                     <Subjects/>
-                    {/* <Departments/> */}
+                    {/* <Departments/>
+                    
+                    
+                    
+                    
+                    
+                    */}
                     {/* <Classes/> */}
                 </div>
             </AuthLayout>

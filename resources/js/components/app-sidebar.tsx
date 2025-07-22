@@ -48,7 +48,7 @@ const data = {
             items: [
                 {
                     title: 'Register Book',
-                    url: '#',
+                    url: '/books/create',
                     icon: BookPlus,
                 },
                 {
