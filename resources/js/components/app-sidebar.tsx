@@ -64,7 +64,7 @@ const data = {
 
                 {
                     title: 'Issue Book',
-                    url: '#',
+                    url: '/books-issue/create',
                     icon: ArrowUpRight,
                 },
                 {

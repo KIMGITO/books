@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\IssueController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
@@ -33,6 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/books', BookController::class);
     Route::resource('/teachers', TeacherController::class);
     Route::resource('/students', StudentController::class);
+    Route::resource('/books-issue', IssueController::class);
 });
 
 require __DIR__.'/settings.php';
