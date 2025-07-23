@@ -28,10 +28,10 @@ export default function BookForm() {
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="level">Graded/level</Label>
-                                        <Select >
+                                        <Select>
                                             <SelectTrigger id="level">
                                                 <SelectValue placeholder="Graded/level"></SelectValue>
-                                                <SelectContent >
+                                                <SelectContent>
                                                     <SelectItem value="1">Level 1</SelectItem>
                                                 </SelectContent>
                                             </SelectTrigger>
@@ -53,7 +53,6 @@ export default function BookForm() {
                                                     <SelectItem value="like_new">Like New</SelectItem>
                                                     <SelectItem value="good">Good</SelectItem>
                                                     <SelectItem value="acceptable">Acceptable</SelectItem>
-                                                    
                                                 </SelectContent>
                                             </SelectTrigger>
                                         </Select>
@@ -63,6 +62,10 @@ export default function BookForm() {
                                     <div className="grid gap-2">
                                         <Label htmlFor="cover_image">Cover Image</Label>
                                         <Input type="file" id="cover_image" />
+                                    </div>
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="quantity">Quantity</Label>
+                                        <Input id="quantity" type='number'/>
                                     </div>
                                 </div>
 

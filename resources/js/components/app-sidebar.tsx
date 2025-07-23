@@ -6,6 +6,8 @@ import * as React from 'react';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
+import { ScrollArea } from '@radix-ui/react-scroll-area';
+import { ScrollBar } from './ui/scroll-area';
 
 // This is sample data.
 const data = {
@@ -36,7 +38,7 @@ const data = {
                 },
                 {
                     title: 'Books',
-                    url: '#',
+                    url: '/books',
                     icon: BookOpen,
                 },
             ],
@@ -158,17 +160,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
     return (
         <Sidebar collapsible="icon" {...props}>
-            <SidebarHeader>
-                {/* <TeamSwitcher teams={data.teams} /> */}
-            </SidebarHeader>
-            <SidebarContent>
-                <NavMain items={data.navMain} />
-                {/* <NavProjects projects={data.projects} /> */}
-            </SidebarContent>
-            <SidebarFooter>
-                <NavUser user={user} />
-            </SidebarFooter>
-            <SidebarRail />
+           
+                <SidebarHeader>{/* <TeamSwitcher teams={data.teams} /> */}</SidebarHeader>
+                <SidebarContent>
+                    <NavMain items={data.navMain} />
+                    {/* <NavProjects projects={data.projects} /> */}
+                </SidebarContent>
+                <SidebarFooter>
+                    <NavUser user={user} />
+                </SidebarFooter>
+                <SidebarRail />
+                
         </Sidebar>
     );
 }
