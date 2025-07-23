@@ -9,7 +9,7 @@ export default function Teachers
                 <h1 className="text-2xl font-bold">Teachers</h1>
                 <p className="mt-2 text-gray-600">Manage teacher records and details.</p>
                 <div className="flex w-full flex-col items-center justify-center">
-                    <div className="rounded-2xl border p-2 md:w-8/12">
+                    <div className="rounded-2xl border p-2 w-11/12  md:w-fit">
                         <Table>
                             <TableHeader>
                                 <TableHead>#</TableHead>
