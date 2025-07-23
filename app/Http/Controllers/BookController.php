@@ -8,10 +8,10 @@ use Inertia\Inertia;
 class BookController extends Controller
 {
     public function index() {
-        // return Inertia::render('app/settings', [
-        //     'active' => 'books',
-        //     'books' => \App\Models\Book::with(['subject', 'department'])->get(),
-        // ]);
+        return Inertia::render('dash/books', [
+            'active' => 'English',
+            // 'books' => \App\Models\Book::with(['subject', 'department'])->get(),
+        ]);
     }
 
     public function create(){
