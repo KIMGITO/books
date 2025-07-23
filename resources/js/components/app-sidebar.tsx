@@ -26,12 +26,12 @@ const data = {
 
                 {
                     title: 'Teachers',
-                    url: '#',
+                    url: '/teachers',
                     icon: User2,
                 },
                 {
                     title: 'Students',
-                    url: '#',
+                    url: '/students',
                     icon: UserCircle2,
                 },
                 {
