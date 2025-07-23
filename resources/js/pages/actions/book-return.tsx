@@ -3,13 +3,14 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
+import { CircleCheckBig } from 'lucide-react';
 
 export default function BookReturn() {
     return (
         <AppLayout>
             <AuthLayout title="Book Return" description="Return books issued to students">
-                <div className="w-full:md-w-3/4 grid justify-center gap-4">
-                    <Input placeholder="book number E.g E/123/23" className="rounded-3xl" />
+                <div className="w-full:md-w-3/4 flex justify-center gap-4">
+                    <Input placeholder="book number E.g E/123/23 " className="rounded-3xl w-1/2" />
                 </div>
 
                 <Card className="rounded-2xl py-0 pt-4">
@@ -44,7 +45,7 @@ export default function BookReturn() {
                     <CardFooter className="flex justify-between rounded-b-2xl p-2">
                         <Button variant={'outline'}>Cancel</Button>
                         <Button onClick={() => {}} variant={'default'}>
-                            Return
+                            Mark Returned <CircleCheckBig/>
                         </Button>
                     </CardFooter>
                 </Card>
