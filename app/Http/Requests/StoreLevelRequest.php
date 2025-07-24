@@ -23,9 +23,27 @@ class StoreLevelRequest extends FormRequest
     {
 
         return [
-            'name' => 'required|numeric',
+            'name' => 'required|numeric|unique:levels,name',
             'description'=>'required|string:max:50',
            
+        ];
+    }
+
+    public function attributes(){
+        return [
+            'name' => 'level name',
+            'description' => 'description',
+        ];
+    }
+
+    public function messages(){
+        return [
+            'name.required' => 'The level name is required.',
+            'name.numeric' => 'The level name must be a number.',
+            'name.unique' => 'The level name exists.',
+            'description.required' => 'The description is required.',
+            'description.string' => 'The description must be a text.',
+            'description.max' => 'The description may not be greater than 50 characters.',
         ];
     }
 }

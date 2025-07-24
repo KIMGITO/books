@@ -9,8 +9,6 @@ class Subject extends Model
     protected $fillable = [
         'name',
         'code',
-        'description',
-        'level',
         'department_id',
         'created_by',
         'updated_by',

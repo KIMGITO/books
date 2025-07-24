@@ -26,7 +26,7 @@ class StoreSubjectRequest extends FormRequest
             'code' => 'required|string|min:2|max:10|unique:subjects,code',
             'description' => 'nullable|string|max:255',
             'level' => 'required|integer|exists:levels,id',
-            'department_id' => 'required|integer|exists:departments,id',
+            'department' => 'required|integer|exists:departments,id',
         ];
     }
 }

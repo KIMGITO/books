@@ -10,15 +10,17 @@ import { Loader } from 'lucide-react';
 
 interface InitialValues{
     name: string;
+    code: string;
     department: string;
 }
 
-export default function Subjects({ initialValues }: { initialValues: InitialValues }) {
+export default function Subjects({ initialValues }: { initialValues?: InitialValues }) {
     const isEdit = initialValues != null;
 
     // Initial values for the form
     const { data, setData, processing, post, put, errors } = useForm({
         name: initialValues?.name || '',
+        code: initialValues?.code || '',
         department: initialValues?.department || ''
     })
     const handleSubmit = (e: React.FormEvent) => {
@@ -29,6 +31,14 @@ export default function Subjects({ initialValues }: { initialValues: InitialValu
             post(route('subjects.store'));
         }
     }
+
+    //set code 
+      const handleCode = (codeInput: string) => {
+          if (codeInput) {
+              setData('code', codeInput);
+              data.code = codeInput;
+          }
+      };
     // Set subject name
     const handleName = (nameInput: string) => {
         if (nameInput) {
@@ -52,6 +62,20 @@ export default function Subjects({ initialValues }: { initialValues: InitialValu
     const formData = (
         <form onSubmit={handleSubmit}>
             <div className="grid gap-3">
+                <div className="grid gap-2">
+                    <Label htmlFor="code"> Code</Label>
+                    <Input
+                        placeholder="e.g E103"
+                        id="code"
+                        type="text"
+                        value={data.code}
+                        onChange={(e) => {
+                            handleCode(e.target.value);
+                        }}
+                    />
+                    <InputError message={errors.code} />
+                </div>
+
                 <div className="grid gap-2">
                     <Label htmlFor="name"> Name</Label>
                     <Input
