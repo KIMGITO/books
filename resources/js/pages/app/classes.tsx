@@ -1,12 +1,55 @@
 // pages/settings.tsx
 import { TableWithForm } from '@/components/app-setting';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
+import { useForm } from '@inertiajs/react';
 
-export default function SettingsPage() {
+interface InitialValue {
+    name: string;
+    teacher: string;
+}
+
+export default function SettingsPage({ initialValue }: { initialValue?: InitialValue }) {
+    const isEdit = initialValue != null;
+
+
+    const { data, setData, errors, post, put } = useForm({
+        name: initialValue?.name || '',
+        teacher: initialValue?.teacher || '',
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (isEdit) {
+            put('/grades');
+        } else {
+            post('/grades');
+        }
+        
+    }
+
+    //set Class name
+    const handleName = (nameInput: string) => {
+        if (nameInput) {
+            setData('name', nameInput);
+            data.name = nameInput;
+        }
+    };
+    //set Class teacher
+    const handleTeacher = (teacherInput: string) => {
+        if (teacherInput) {
+            setData('teacher', teacherInput);
+            data.teacher = teacherInput;
+        }
+    };
+
+
+
+
     // Table data could also be passed as objects and mapped inside the component
     const tableBody = (
         <TableBody>
@@ -23,23 +66,25 @@ export default function SettingsPage() {
 
     
     const formContent = (
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={handleSubmit }>
             <div className="grid gap-3">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Name</Label>
-                    <Input placeholder="e.g. 1" id="name" />
+                    <Input placeholder="e.g. 1" id="name" value={data.name} onChange={(e) => handleName(e.target.value)} />
+                    <InputError message={errors.name} />
                 </div>
                 <div className="grid gap-4">
                     <Label htmlFor="teacher">Class Teacher</Label>
-                    <Select>
+                    <Select onValueChange={(value) => {handleTeacher(value)}}>
                         <SelectTrigger>
-                            <SelectValue placeholder="Select teacher" />
+                            <SelectValue placeholder="Select teacher" ></SelectValue>
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent >
                             <SelectItem value="1">John Nyaga</SelectItem>
                             <SelectItem value="2">Kamau</SelectItem>
                         </SelectContent>
                     </Select>
+                    <InputError message={errors.teacher} />
                 </div>
                 <Button variant={'ghost'} type="submit">Save</Button>
             </div>
