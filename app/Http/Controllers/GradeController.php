@@ -18,8 +18,8 @@ class GradeController extends Controller
      */
     public function index()
     {
-        $classes = Grade::all();
-        $levels = Level::all();
+        $classes = Grade::orderBy('name', 'desc');
+        $levels = Level::orderBy('name', 'asc')->get();
         $teachers = Teacher::all();
         return Inertia::render('app/settings', ['active' => 'classes', 'classes' => $classes, 'levels' => $levels, 'teachers' => $teachers,]);
     }

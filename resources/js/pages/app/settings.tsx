@@ -6,13 +6,15 @@ import Departments from './departments';
 import Classes from './classes';
 import Subjects from './subjects';
 import { PageProps, router } from '@inertiajs/core';
+import { Levels, Teachers } from '@/types';
 
 interface Props extends PageProps {
     active: string;
+    levels: Levels[];
+    teachers: Teachers[];
 }
 
-export default function Settings(props:Props) {
-    console.log(props.active);
+export default function Settings(props:Props,) {
     return (
         <AppLayout>
             <AuthLayout description="Level Settings" title="Settings">
@@ -50,7 +52,7 @@ export default function Settings(props:Props) {
                         <Departments />
                     </div>
                     <div className={`${props.active == 'classes' ? '' : 'hidden'}`}>
-                        <Classes />
+                        <Classes levels={props.levels} teachers={props.teachers}/>
                     </div>
                     <div className={`${props.active == 'subjects' ? '' : 'hidden'}`}>
                         <Subjects />

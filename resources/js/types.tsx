@@ -8,3 +8,8 @@ export interface Levels {
     id: number;
     name: string;
 }
+
+
+export interface Active {
+    active: string;
+}

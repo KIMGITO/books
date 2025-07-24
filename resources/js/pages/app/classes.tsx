@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
+import { Levels, Teachers } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { Loader } from 'lucide-react';
 
@@ -24,7 +25,7 @@ interface PageProps {
 }
 
 export default function SettingsPage({ initialValue, teachers, levels }: PageProps) {
-
+console.log(levels)
     
     const isEdit = initialValue != null;
 
