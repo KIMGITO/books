@@ -18,7 +18,7 @@ export default function SettingsPage({ initialValue }: { initialValue?: InitialV
     const isEdit = initialValue != null;
 
 
-    const { data, setData, errors, post, put } = useForm({
+    const { data, setData, errors, post, put, processing } = useForm({
         name: initialValue?.name || '',
         teacher: initialValue?.teacher || '',
     });
@@ -91,8 +91,8 @@ export default function SettingsPage({ initialValue }: { initialValue?: InitialV
                     </Select>
                     <InputError message={errors.teacher} />
                 </div>
-                <Button type="submit" variant={'ghost'} className={`${process ? 'cursor-progress' : ''}`}>
-                    {process ? <Loader className="animate-spin" /> : `${isEdit ? 'Update' : 'Save'}`}
+                <Button type="submit" variant={'ghost'} className={`${processing ? 'cursor-progress' : ''}`}>
+                    {processing ? <Loader className="animate-spin" /> : `${isEdit ? 'Update' : 'Save'}`}
                 </Button>
             </div>
         </form>

@@ -17,7 +17,7 @@ export default function Departments({ initialValue }: { initialValue?: InitialVa
 
     const isEdit = initialValue != null;
 
-    const { data, setData, errors, post, put } = useForm({
+    const { data, setData, errors, post, put, processing } = useForm({
         name: initialValue?.name || '',
         description: initialValue?.description || '',
     });
@@ -92,8 +92,8 @@ export default function Departments({ initialValue }: { initialValue?: InitialVa
                     <InputError message={errors.description} />
                 </div>
 
-                <Button type="submit" variant={'ghost'} className={`${process ? 'cursor-progress' : ''}`}>
-                    {process ? <Loader className="animate-spin" /> : `${isEdit ? 'Update' : 'Save'}`}
+                <Button type="submit" variant={'ghost'} className={`${processing ? 'cursor-progress' : ''}`}>
+                    {processing ? <Loader className="animate-spin" /> : `${isEdit ? 'Update' : 'Save'}`}
                 </Button>
             </div>
         </form>
