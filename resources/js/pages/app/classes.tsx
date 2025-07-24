@@ -11,15 +11,26 @@ import { Loader } from 'lucide-react';
 
 interface InitialValue {
     name: string;
+    level: string;
     teacher: string;
 }
 
-export default function SettingsPage({ initialValue }: { initialValue?: InitialValue }) {
-    const isEdit = initialValue != null;
 
+
+interface PageProps {
+    initialValue?: InitialValue;
+    teachers: Teachers[];
+    levels: Levels[];
+}
+
+export default function SettingsPage({ initialValue, teachers, levels }: PageProps) {
+
+    
+    const isEdit = initialValue != null;
 
     const { data, setData, errors, post, put, processing } = useForm({
         name: initialValue?.name || '',
+        level: initialValue?.level || '',
         teacher: initialValue?.teacher || '',
     });
 
@@ -30,8 +41,14 @@ export default function SettingsPage({ initialValue }: { initialValue?: InitialV
         } else {
             post('/grades');
         }
-        
-    }
+    };
+    //set Class level
+    const handleLevel = (levelInput: string) => {
+        if (levelInput) {
+            setData('level', levelInput);
+            data.level = levelInput;
+        }
+    };
 
     //set Class name
     const handleName = (nameInput: string) => {
@@ -48,13 +65,10 @@ export default function SettingsPage({ initialValue }: { initialValue?: InitialV
         }
     };
 
-
-
-
     // Table data could also be passed as objects and mapped inside the component
     const tableBody = (
         <TableBody>
-            {Array.from({ length:12 }).map((_, i) => (
+            {Array.from({ length: 12 }).map((_, i) => (
                 <TableRow key={i}>
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>Form {i + 1} East</TableCell>
@@ -65,7 +79,6 @@ export default function SettingsPage({ initialValue }: { initialValue?: InitialV
         </TableBody>
     );
 
-    
     const formContent = (
         <form onSubmit={handleSubmit}>
             <div className="grid gap-3">
@@ -73,6 +86,32 @@ export default function SettingsPage({ initialValue }: { initialValue?: InitialV
                     <Label htmlFor="name">Name</Label>
                     <Input placeholder="e.g. 1" id="name" value={data.name} onChange={(e) => handleName(e.target.value)} />
                     <InputError message={errors.name} />
+                </div>
+                <div className="grid gap-4">
+                    <Label htmlFor="level">Class Level</Label>
+                    <Select
+                        onValueChange={(value) => {
+                            handleLevel(value);
+                        }}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select level"></SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                            {levels != null ? (
+                                levels.map((level) => (
+                                    <SelectItem key={level.id} value={level.name}>
+                                        {level.name}
+                                    </SelectItem>
+                                ))
+                            ) : (
+                                <SelectItem disabled={true} value="0">
+                                    No levels available
+                                </SelectItem>
+                            )}
+                        </SelectContent>
+                    </Select>
+                    <InputError message={errors.level} />
                 </div>
                 <div className="grid gap-4">
                     <Label htmlFor="teacher">Class Teacher</Label>
@@ -85,8 +124,17 @@ export default function SettingsPage({ initialValue }: { initialValue?: InitialV
                             <SelectValue placeholder="Select teacher"></SelectValue>
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="1">John Nyaga</SelectItem>
-                            <SelectItem value="2">Kamau</SelectItem>
+                            {teachers != null ? (
+                                teachers.map((teacher) => (
+                                    <SelectItem value={teacher.id.toString()}>
+                                        {teacher.first_name} {teacher.last_name}
+                                    </SelectItem>
+                                ))
+                            ) : (
+                                <SelectItem disabled={true} value="0">
+                                    No teachers available
+                                </SelectItem>
+                            )}
                         </SelectContent>
                     </Select>
                     <InputError message={errors.teacher} />
