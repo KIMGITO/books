@@ -7,6 +7,7 @@ export interface Teachers {
 export interface Levels {
     id: number;
     name: string;
+    description: string;
 }
 
 

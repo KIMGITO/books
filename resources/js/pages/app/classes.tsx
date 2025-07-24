@@ -102,7 +102,7 @@ console.log(levels)
                             {levels != null ? (
                                 levels.map((level) => (
                                     <SelectItem key={level.id} value={level.name}>
-                                        {level.name}
+                                        {level.name} {' ' }{level.description}
                                     </SelectItem>
                                 ))
                             ) : (
@@ -128,7 +128,7 @@ console.log(levels)
                             {teachers != null ? (
                                 teachers.map((teacher) => (
                                     <SelectItem value={teacher.id.toString()}>
-                                        {teacher.first_name} {teacher.last_name}
+                                        {teacher.first_name} { ' '}{teacher.last_name}
                                     </SelectItem>
                                 ))
                             ) : (
