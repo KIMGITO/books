@@ -27,15 +27,12 @@ class LevelController extends Controller
         $validated = $request->validated();
 
         // Create a new level using the validated data
-        $level = Level::create([
-            'name' => $validated['name'],
-            'description' => $validated['description'],
-            'created_by' => Auth::id(),
-            'updated_by' => Auth::id(),
-        ]);
+        $validated['created_by'] = Auth::id();
+        $validated['updated_by'] = Auth::id();
+        $level = Level::create($validated);
 
         // Redirect back with a success message
-        return redirect()->back()->with('success', 'Level created successfully.');
+        return redirect()->route('levels.index')->with('success', 'Level created successfully.');
 
     }
 }
