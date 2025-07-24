@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 export default function Departments() {
 
-    const tableHeads = ['#', 'Name', 'Subjects'];
+    const tableHeads = ['#', 'Name', 'Subjects',];
     const tableBody = (
         <TableBody className="rounded-2xl">
             {Array.from({ length: 12 }).map((_, i) => (

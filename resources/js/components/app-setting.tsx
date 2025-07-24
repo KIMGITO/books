@@ -14,6 +14,7 @@ interface TableWithFormProps {
 }
 
 export function TableWithForm({ tableTitle, formTitle, tableHeaders, tableData, formContent, scrollHeight = 'h-[300px]' }: TableWithFormProps) {
+   
     return (
         <div className="flex h-full flex-1 flex-col gap-4 p-1">
             <div className="flex flex-col rounded-3xl border md:flex-row dark:border-sidebar-border">

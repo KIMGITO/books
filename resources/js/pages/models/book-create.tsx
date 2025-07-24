@@ -65,7 +65,7 @@ export default function BookForm() {
                                     </div>
                                     <div className="grid gap-2">
                                         <Label htmlFor="quantity">Quantity</Label>
-                                        <Input id="quantity" type='number'/>
+                                        <Input id="quantity" placeholder='quantity of the books ' type='number'/>
                                     </div>
                                 </div>
 
