@@ -2,48 +2,59 @@ import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import Level from './level';
 import { Cog} from 'lucide-react';
-import Subjects from './subjects';
 import Departments from './departments';
 import Classes from './classes';
+import Subjects from './subjects';
+import { PageProps, router } from '@inertiajs/core';
 
-export default function Settings() {
+interface Props extends PageProps {
+    active: string;
+}
+
+export default function Settings(props:Props) {
+    console.log(props.active);
     return (
         <AppLayout>
             <AuthLayout description="Level Settings" title="Settings">
                 <div className="grid gap-4">
                     <div className="flex justify-start text-center md:grid-cols-6">
                         <div
-                            className="flex justify-between gap-4 border-purple-600 bg-secondary px-2 py-1 align-baseline text-xs text-purple-400"
-                            onClick={() => {}}
+                            className={`${props.active == 'departments' ? 'flex justify-between gap-4 border-b-2 border-b-green-900 bg-secondary px-2 py-1 align-baseline text-xs text-green-400' : 'flex justify-between gap-4 border-purple-600 cursor-pointer bg-secondary px-2 py-1 align-baseline text-xs text-purple-400 hover:text-green-800 hover:border-b hover:border-b-green-800'}`}
+                            onClick={() => {router.get('/departments')}}
                         >
-                            <Cog className="" size={15} /> <p>Level </p>
+                            <Cog className="" size={15} /> <p>Departments </p>
                         </div>
                         <div
-                            className="mx-4 flex justify-between gap-4 border-b-2 border-b-green-900 bg-secondary px-2 py-1 align-baseline text-xs text-green-400"
-                            onClick={() => {}}
+                            className={`${props.active == 'subjects' ? 'flex justify-between gap-4 border-b-2 border-b-green-900 bg-secondary px-2 py-1 align-baseline text-xs text-green-400' : 'flex justify-between gap-4 border-purple-600 cursor-pointer bg-secondary px-2 py-1 align-baseline text-xs text-purple-400 hover:text-green-800 hover:border-b hover:border-b-green-800'}`}
+                            onClick={() => {router.get('/subjects')}}
                         >
-                            <Cog className="animate-spin" size={15} /> <p>Level </p>
+                            <Cog className="" size={15} /> <p>Subjects </p>
                         </div>
                         <div
-                            className="flex justify-between gap-4 border-purple-600 bg-secondary px-2 py-1 align-baseline text-xs text-purple-400"
-                            onClick={() => {}}
+                            className={`${props.active == 'levels' ? 'flex justify-between gap-4 border-b-2 border-b-green-900 bg-secondary px-2 py-1 align-baseline text-xs text-green-400' : 'flex justify-between gap-4 border-purple-600 cursor-pointer bg-secondary px-2 py-1 align-baseline text-xs text-purple-400 hover:text-green-800 hover:border-b hover:border-b-green-800'}`}
+                            onClick={() => {router.get('/levels')}}
                         >
-                            <Cog className="" size={15} /> <p>Level </p>
+                            <Cog className="" size={15} /> <p>Levels </p>
+                        </div>
+                        <div
+                            className={`${props.active == 'classes' ? 'flex justify-between gap-4 border-b-2 border-b-green-900 bg-secondary px-2 py-1 align-baseline text-xs text-green-400' : 'flex justify-between gap-4 border-purple-600 cursor-pointer bg-secondary px-2 py-1 align-baseline text-xs text-purple-400 hover:text-green-800 hover:border-b hover:border-b-green-800'}`}
+                            onClick={() => {router.get('/grades')}}
+                        >
+                            <Cog className="" size={15} /> <p>Classes </p>
                         </div>
                     </div>
-                    <Level />
-                    <div className="hidden">
-                    
+                    <div className={`${props.active == 'levels' ? '' : 'hidden'}`}>
+                        <Level />
+                    </div>
+                    <div className={`${props.active == 'departments' ? '' : 'hidden'}`}>
                         <Departments />
                     </div>
-                    {/* <Departments/>
-                    
-                    
-                    
-                    
-                    
-                    */}
-                    {/* <Classes/> */}
+                    <div className={`${props.active == 'classes' ? '' : 'hidden'}`}>
+                        <Classes />
+                    </div>
+                    <div className={`${props.active == 'subjects' ? '' : 'hidden'}`}>
+                        <Subjects />
+                    </div>
                 </div>
             </AuthLayout>
         </AppLayout>

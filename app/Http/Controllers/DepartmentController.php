@@ -9,7 +9,7 @@ class DepartmentController extends Controller
 {
     public function index(){
         return Inertia::render('app/settings', [
-            'activeTab' => 'departments',
+            'active' => 'departments',
         ]);
     }
 }
