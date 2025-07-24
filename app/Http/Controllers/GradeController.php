@@ -18,9 +18,10 @@ class GradeController extends Controller
      */
     public function index()
     {
-        $classes = Grade::orderBy('name', 'desc');
+        $classes = Grade:: with(['teacher', 'level'])->get();
         $levels = Level::orderBy('name', 'asc')->get();
         $teachers = Teacher::all();
+    
         return Inertia::render('app/settings', ['active' => 'classes', 'classes' => $classes, 'levels' => $levels, 'teachers' => $teachers,]);
     }
 
@@ -31,7 +32,7 @@ class GradeController extends Controller
     public function store(StoreGradeRequest $request)
     {
         $validated = $request->validated();
-
+        $validated['level_id'] = $request['level'];
         $validated['created_by'] = Auth::id();
         $validated['updated_by'] = Auth::id();
         $grade = Grade::create($validated);

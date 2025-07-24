@@ -18,7 +18,7 @@ interface Props {
 }
 
 
-export default function Level({ initialLevel }: Props) {
+export default function Levels({ initialLevel }: Props) {
     const isEdit = initialLevel != null;
     const tableHeaders = ['#', 'Grade', 'Description'];
 

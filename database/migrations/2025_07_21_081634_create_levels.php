@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('levels', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('name')->unique();
             $table->string('description')->nullable();
             $table->foreignId('created_by')->nullable()-> constrained('users')->onDelete('set null');
             $table->foreignId('updated_by')->nullable()-> constrained('users')->onDelete('set null');
+            $table->timestamps();
+
             $table->index(['created_by', 'updated_by'], 'levels_user_index');
 
         });

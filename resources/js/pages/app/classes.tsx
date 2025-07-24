@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { Levels, Teachers } from '@/types';
+import { Grade, CLevel, Teacher } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { Loader } from 'lucide-react';
 
@@ -20,12 +20,13 @@ interface InitialValue {
 
 interface PageProps {
     initialValue?: InitialValue;
-    teachers: Teachers[];
-    levels: Levels[];
+    teachers: Teacher[];
+    levels: CLevel[];
+    classes: Grade[];
 }
 
-export default function SettingsPage({ initialValue, teachers, levels }: PageProps) {
-console.log(levels)
+export default function SettingsPage({ initialValue, teachers, levels, classes }: PageProps) {
+
     
     const isEdit = initialValue != null;
 
@@ -47,38 +48,51 @@ console.log(levels)
     const handleLevel = (levelInput: string) => {
         if (levelInput) {
             setData('level', levelInput);
-            data.level = levelInput;
         }
     };
 
-    //set Class name
     const handleName = (nameInput: string) => {
         if (nameInput) {
             setData('name', nameInput);
-            data.name = nameInput;
-        }
-    };
-    //set Class teacher
-    const handleTeacher = (teacherInput: string) => {
-        if (teacherInput) {
-            setData('teacher', teacherInput);
-            data.teacher = teacherInput;
         }
     };
 
-    // Table data could also be passed as objects and mapped inside the component
+    const handleTeacher = (teacherInput: string) => {
+        if (teacherInput) {
+            setData('teacher', teacherInput);
+        }
+    };
+    const headers = ['Level', 'Class Name', 'Teacher', 'Students','Actions'];
+
+
     const tableBody = (
         <TableBody>
-            {Array.from({ length: 12 }).map((_, i) => (
-                <TableRow key={i}>
-                    <TableCell>{i + 1}</TableCell>
-                    <TableCell>Form {i + 1} East</TableCell>
-                    <TableCell>Teacher {i + 1}</TableCell>
-                    <TableCell>{40 + i}</TableCell>
+            {classes != null && classes.length > 0 ? (
+                classes.map((grade, i) => (
+                    <TableRow key={i}>
+                        <TableCell>{grade.level?.name} {" "} { grade.level?.description }</TableCell>
+                        <TableCell>{grade?.name}</TableCell>
+                        <TableCell>
+                            {grade.classTeacher?.first_name} {grade.classTeacher?.last_name}
+                        </TableCell>
+                        <TableCell>{60}</TableCell> {/* Added class name */}
+                        <TableCell>
+                            <span className="text-xs text-green-500 hover:underline">MORE</span>
+                        </TableCell>
+                    </TableRow>
+                ))
+            ) : (
+                <TableRow>
+                    <TableCell colSpan={5} className="text-center text-gray-500">
+                        {' '}
+                        {/* Updated colSpan to 5 */}
+                        No classes available
+                    </TableCell>
                 </TableRow>
-            ))}
+            )}
         </TableBody>
     );
+
 
     const formContent = (
         <form onSubmit={handleSubmit}>
@@ -102,7 +116,7 @@ console.log(levels)
                             {levels != null ? (
                                 levels.map((level) => (
                                     <SelectItem key={level.id} value={level.name}>
-                                        {level.name} {' ' }{level.description}
+                                        {level.name} {level.description}
                                     </SelectItem>
                                 ))
                             ) : (
@@ -127,8 +141,10 @@ console.log(levels)
                         <SelectContent>
                             {teachers != null ? (
                                 teachers.map((teacher) => (
-                                    <SelectItem value={teacher.id.toString()}>
-                                        {teacher.first_name} { ' '}{teacher.last_name}
+                                    <SelectItem key={teacher.id} value={teacher.id.toString()}>
+                                        {' '}
+                                        {/* Added key */}
+                                        {teacher.first_name} {teacher.last_name}
                                     </SelectItem>
                                 ))
                             ) : (
@@ -151,7 +167,7 @@ console.log(levels)
         <TableWithForm
             tableTitle="All Classes"
             formTitle="Add A Class"
-            tableHeaders={['Level', 'Class Name', 'Teacher', 'Students']}
+            tableHeaders={headers}
             tableData={tableBody}
             formContent={formContent}
             scrollHeight="h-[200px]"

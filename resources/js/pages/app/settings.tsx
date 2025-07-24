@@ -5,16 +5,18 @@ import { Cog} from 'lucide-react';
 import Departments from './departments';
 import Classes from './classes';
 import Subjects from './subjects';
-import { PageProps, router } from '@inertiajs/core';
-import { Levels, Teachers } from '@/types';
+import {  router } from '@inertiajs/core';
+import {  Teacher , CLevel, Grade} from '@/types';
 
-interface Props extends PageProps {
+interface Props  {
     active: string;
-    levels: Levels[];
-    teachers: Teachers[];
+    levels: CLevel[];
+    teachers: Teacher[];
+    classes: Grade[]
 }
 
-export default function Settings(props:Props,) {
+export default function Settings(props: Props,) {
+    console.log(props.classes)
     return (
         <AppLayout>
             <AuthLayout description="Level Settings" title="Settings">
@@ -52,7 +54,7 @@ export default function Settings(props:Props,) {
                         <Departments />
                     </div>
                     <div className={`${props.active == 'classes' ? '' : 'hidden'}`}>
-                        <Classes levels={props.levels} teachers={props.teachers}/>
+                        <Classes levels={props.levels} teachers={props.teachers} classes={props.classes}/>
                     </div>
                     <div className={`${props.active == 'subjects' ? '' : 'hidden'}`}>
                         <Subjects />
