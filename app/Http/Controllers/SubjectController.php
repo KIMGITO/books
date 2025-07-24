@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreSubjectRequest;
 
 class SubjectController extends Controller
@@ -15,8 +16,10 @@ class SubjectController extends Controller
 
     public function store(StoreSubjectRequest $request)
     {
-        $validatedData = $request->validated();
-        Subject::create($validatedData);
+        $validated = $request->validated();
+        $validated['created_by'] = Auth::id();
+        $validated['updated_by'] = Auth::id();
+        Subject::create($validated);
 
         return redirect()->route('subjects.index')->with('success', 'Subject created successfully.');
     }
