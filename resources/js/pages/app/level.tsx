@@ -34,7 +34,7 @@ export default function Level({ initialLevel }: Props) {
         </TableBody>
     );
 
-    const { data, errors, progress, post, setData, put } = useForm({
+    const { data, errors, processing, post, setData, put } = useForm({
         name: initialLevel?.level || '',
         description: initialLevel?.description || '',
     });
@@ -95,8 +95,8 @@ export default function Level({ initialLevel }: Props) {
                     <InputError message={errors.description} />
                 </div>
 
-                <Button type="submit" variant={'ghost'} className={`${progress ? 'cursor-progress' : 'cursor-pointer'}`}>
-                    {progress ? <Loader className="animate-spin" /> : `${isEdit ? 'Update' : 'Save'}`}
+                <Button type="submit" variant={'ghost'} className={`${processing ? 'cursor-progress' : 'cursor-pointer'}`}>
+                    {processing ? <Loader className="animate-spin" /> : `${isEdit ? 'Update' : 'Save'}`}
                 </Button>
             </div>
         </form>
