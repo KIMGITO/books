@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { useForm } from '@inertiajs/react';
+import { Loader } from 'lucide-react';
 
 interface InitialValue {
     name: string;
@@ -66,7 +67,7 @@ export default function SettingsPage({ initialValue }: { initialValue?: InitialV
 
     
     const formContent = (
-        <form onSubmit={handleSubmit }>
+        <form onSubmit={handleSubmit}>
             <div className="grid gap-3">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Name</Label>
@@ -75,18 +76,24 @@ export default function SettingsPage({ initialValue }: { initialValue?: InitialV
                 </div>
                 <div className="grid gap-4">
                     <Label htmlFor="teacher">Class Teacher</Label>
-                    <Select onValueChange={(value) => {handleTeacher(value)}}>
+                    <Select
+                        onValueChange={(value) => {
+                            handleTeacher(value);
+                        }}
+                    >
                         <SelectTrigger>
-                            <SelectValue placeholder="Select teacher" ></SelectValue>
+                            <SelectValue placeholder="Select teacher"></SelectValue>
                         </SelectTrigger>
-                        <SelectContent >
+                        <SelectContent>
                             <SelectItem value="1">John Nyaga</SelectItem>
                             <SelectItem value="2">Kamau</SelectItem>
                         </SelectContent>
                     </Select>
                     <InputError message={errors.teacher} />
                 </div>
-                <Button variant={'ghost'} type="submit">Save</Button>
+                <Button type="submit" variant={'ghost'} className={`${process ? 'cursor-progress' : ''}`}>
+                    {process ? <Loader className="animate-spin" /> : `${isEdit ? 'Update' : 'Save'}`}
+                </Button>
             </div>
         </form>
     );

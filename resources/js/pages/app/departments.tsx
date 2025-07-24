@@ -1,13 +1,55 @@
 import { TableWithForm } from "@/components/app-setting";
+import InputError from "@/components/input-error";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {  TableBody, TableRow, TableCell } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import { useForm } from "@inertiajs/react";
+import { Loader } from "lucide-react";
 
-export default function Departments() {
+interface InitialValue {
+    name: string;
+    description?: string;
+}
 
-    const tableHeads = ['#', 'Name', 'Subjects',];
+export default function Departments({ initialValue }: { initialValue?: InitialValue }) {
+
+    const isEdit = initialValue != null;
+
+    const { data, setData, errors, post, put } = useForm({
+        name: initialValue?.name || '',
+        description: initialValue?.description || '',
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (isEdit) {
+            put('/departments');
+        } else {
+            post('/departments');
+        }
+    };
+    // Set department name
+    const handleName = (nameInput: string) => {
+        if (nameInput) {
+            setData('name', nameInput);
+            data.name = nameInput;
+        }
+    };
+    // Set department description
+    const handleDescription = (descriptionInput: string) => {
+        if (descriptionInput) {
+            setData('description', descriptionInput);
+            data.description = descriptionInput;
+        }
+    };
+
+
+
+
+
+    const tableHeads = ['#', 'Name', 'Subjects'];
     const tableBody = (
         <TableBody className="rounded-2xl">
             {Array.from({ length: 12 }).map((_, i) => (
@@ -20,24 +62,49 @@ export default function Departments() {
         </TableBody>
     );
     const formContent = (
-        <form onSubmit={() => {}}>
+        <form onSubmit={handleSubmit}>
             <div className="grid gap-3">
                 <div className="grid gap-2">
                     <Label htmlFor="name"> Name</Label>
-                    <Input placeholder="e.g 1" id="name" type="number" />
-                </div>
-                <div className="grid gap-2">
-                    <Label htmlFor="description"> Note {'(optional)'}</Label>
-                    <Textarea placeholder="e.g This is a science department" id="description" rows={3} />
+                    <Input
+                        placeholder="e.g 1"
+                        id="name"
+                        type="number"
+                        value={data.name}
+                        onChange={(e) => {
+                            handleName(e.target.value);
+                        }}
+                    />
+                    <InputError message={errors.name} />
                 </div>
 
-                <Button type="submit" variant={'ghost'}>
-                    {' Save'}
+                <div className="grid gap-2">
+                    <Label htmlFor="description"> Description {'(optional)'}</Label>
+                    <Textarea
+                        placeholder="e.g This is a science department"
+                        id="description"
+                        rows={3}
+                        value={data.description}
+                        onChange={(e) => {
+                            handleDescription(e.target.value);
+                        }}
+                    />
+                    <InputError message={errors.description} />
+                </div>
+
+                <Button type="submit" variant={'ghost'} className={`${process ? 'cursor-progress' : ''}`}>
+                    {process ? <Loader className="animate-spin" /> : `${isEdit ? 'Update' : 'Save'}`}
                 </Button>
             </div>
         </form>
     );
-     return (
-         <TableWithForm formContent={formContent} formTitle="Add a Department" tableData={ tableBody } tableHeaders={tableHeads}  tableTitle="All departments" />
-     );
+    return (
+        <TableWithForm
+            formContent={formContent}
+            formTitle="Add a Department"
+            tableData={tableBody}
+            tableHeaders={tableHeads}
+            tableTitle="All departments"
+        />
+    );
 }
