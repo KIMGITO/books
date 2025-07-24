@@ -12,4 +12,8 @@ class DepartmentController extends Controller
             'active' => 'departments',
         ]);
     }
+
+    public function store(){
+
+    }
 }
