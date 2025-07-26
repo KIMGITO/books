@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {  TableBody, TableRow, TableCell } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import { Department } from "@/types";
 import { useForm } from "@inertiajs/react";
 import { Loader } from "lucide-react";
 
@@ -13,8 +14,10 @@ interface InitialValue {
     description?: string;
 }
 
-export default function Departments({ initialValue }: { initialValue?: InitialValue }) {
 
+
+export default function Departments({ initialValue, departments }: { initialValue?: InitialValue, departments?:Department[] }) {
+    console.log(departments);
     const isEdit = initialValue != null;
 
     const { data, setData, errors, post, put, processing } = useForm({
@@ -34,7 +37,7 @@ export default function Departments({ initialValue }: { initialValue?: InitialVa
     const handleName = (nameInput: string) => {
         if (nameInput) {
             setData('name', nameInput);
-            data.name = nameInput;
+            
         }
     };
     // Set department description
@@ -49,16 +52,35 @@ export default function Departments({ initialValue }: { initialValue?: InitialVa
 
 
 
-    const tableHeads = ['#', 'Name', 'Subjects'];
+    const tableHeads = ['#', 'Name', 'Subjects', 'Description'];
     const tableBody = (
         <TableBody className="rounded-2xl">
-            {Array.from({ length: 12 }).map((_, i) => (
-                <TableRow key={i} className="rounded">
-                    <TableCell>{i + 1}</TableCell>
-                    <TableCell>Department {i + 1}</TableCell>
-                    <TableCell>Subject {i + 1}</TableCell>
+            {departments != null ? (
+                departments.map((department, index) => (
+                    <TableRow key={department.id} className="hover:bg-secondary">
+                        <TableCell className="">{index + 1}</TableCell>
+                        <TableCell className="">{department.name}</TableCell>
+                        <TableCell className="">
+                            {department.subjects &&
+                                department.subjects.map((subject, i) => (
+                                    <span key={i} className="mr-1 mb-1 inline-block rounded bg-secondary px-2 py-1 text-xs text-purple-500">
+                                        {subject.name}
+                                    </span>
+                                ))}
+                        </TableCell>
+                        <TableCell>{department?.description}</TableCell>
+                        <TableCell>
+                            <span className="text-xs text-green-500 hover:underline">MORE</span>
+                        </TableCell>
+                    </TableRow>
+                ))
+            ) : (
+                <TableRow>
+                    <TableCell colSpan={tableHeads.length} className="text-center ">
+                        No departments found
+                    </TableCell>
                 </TableRow>
-            ))}
+            )}
         </TableBody>
     );
     const formContent = (
@@ -69,7 +91,7 @@ export default function Departments({ initialValue }: { initialValue?: InitialVa
                     <Input
                         placeholder="e.g 1"
                         id="name"
-                        type="number"
+                        type="text"
                         value={data.name}
                         onChange={(e) => {
                             handleName(e.target.value);

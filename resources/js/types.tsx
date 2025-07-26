@@ -21,3 +21,18 @@ export interface Grade{
     level: CLevel,
     classTeacher: Teacher;
 }
+
+interface Subject {
+    id: number;
+    name: string;
+    code?: string;
+    description?: string;
+    department?: Department;
+}
+
+export interface Department {
+    id: number;
+    name: string;
+    subjects?: Subject[];
+    description?: string;
+}

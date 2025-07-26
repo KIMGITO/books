@@ -11,8 +11,10 @@ use App\Http\Requests\StoreDepartmentRequest;
 class DepartmentController extends Controller
 {
     public function index(){
+        $departments = department::all();
         return Inertia::render('app/settings', [
             'active' => 'departments',
+            'departments' => $departments,
         ]);
     }
 
