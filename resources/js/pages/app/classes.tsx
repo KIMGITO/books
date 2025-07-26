@@ -1,14 +1,13 @@
 // pages/settings.tsx
 import { TableWithForm } from '@/components/app-setting';
 import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import SubmitButton from '@/components/ui/submit-button';
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { Grade, CLevel, Teacher } from '@/types';
+import { Grade, Level, Teacher } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { Loader } from 'lucide-react';
 
 interface InitialValue {
     name: string;
@@ -21,7 +20,7 @@ interface InitialValue {
 interface PageProps {
     initialValue?: InitialValue;
     teachers: Teacher[];
-    levels: CLevel[];
+    levels: Level[];
     classes: Grade[];
 }
 
@@ -156,9 +155,7 @@ export default function SettingsPage({ initialValue, teachers, levels, classes }
                     </Select>
                     <InputError message={errors.teacher} />
                 </div>
-                <Button type="submit" variant={'ghost'} className={`${processing ? 'cursor-progress' : ''}`}>
-                    {processing ? <Loader className="animate-spin" /> : `${isEdit ? 'Update' : 'Save'}`}
-                </Button>
+                <SubmitButton isEdit={isEdit} processing={processing} />
             </div>
         </form>
     );

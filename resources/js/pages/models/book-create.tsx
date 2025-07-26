@@ -6,6 +6,8 @@ import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 
 export default function BookForm() {
+
+
     return (
         <AppLayout>
             <AuthLayout description="Add a book" title="Book Form">

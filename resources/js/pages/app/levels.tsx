@@ -1,13 +1,12 @@
 import { TableWithForm } from '@/components/app-setting';
 import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import SubmitButton from '@/components/ui/submit-button';
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 import { Level } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { Loader } from 'lucide-react';
 
 interface InitialLevel  {
     level: string;
@@ -102,9 +101,8 @@ export default function Levels({ initialLevel , levels}: {initialLevel?:InitialL
                     <InputError message={errors.description} />
                 </div>
 
-                <Button type="submit" variant={'ghost'} className={`${processing ? 'cursor-progress' : 'cursor-pointer'}`}>
-                    {processing ? <Loader className="animate-spin" /> : `${isEdit ? 'Update' : 'Save'}`}
-                </Button>
+                     <SubmitButton isEdit={isEdit} processing={processing} />
+
             </div>
         </form>
     );

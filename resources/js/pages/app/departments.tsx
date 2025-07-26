@@ -1,13 +1,12 @@
 import { TableWithForm } from "@/components/app-setting";
 import InputError from "@/components/input-error";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import SubmitButton from "@/components/ui/submit-button";
 import {  TableBody, TableRow, TableCell } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 import { Department } from "@/types";
 import { useForm } from "@inertiajs/react";
-import { Loader } from "lucide-react";
 
 interface InitialValue {
     name: string;
@@ -114,9 +113,7 @@ export default function Departments({ initialValue, departments }: { initialValu
                     <InputError message={errors.description} />
                 </div>
 
-                <Button type="submit" variant={'ghost'} className={`${processing ? 'cursor-progress' : ''}`}>
-                    {processing ? <Loader className="animate-spin" /> : `${isEdit ? 'Update' : 'Save'}`}
-                </Button>
+                <SubmitButton isEdit={isEdit} processing={processing} />
             </div>
         </form>
     );

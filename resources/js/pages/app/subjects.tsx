@@ -1,18 +1,18 @@
 import { TableWithForm } from '@/components/app-setting';
 import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
+import SubmitButton from '@/components/ui/submit-button';
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 import { Department, Subject } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { Loader } from 'lucide-react';
 
 interface InitialValues{
     name: string;
     code: string;
+    description: string;
     department: string;
 }
 
@@ -61,7 +61,7 @@ export default function Subjects({ initialValues, subjects, departments }: { ini
                         type="text"
                         value={data.code}
                         onChange={(e) => {
-                            setData('code', e.target.value)
+                            setData('code', e.target.value);
                         }}
                     />
                     <InputError message={errors.code} />
@@ -75,7 +75,7 @@ export default function Subjects({ initialValues, subjects, departments }: { ini
                         type="text"
                         value={data.name}
                         onChange={(e) => {
-                            setData('name', e.target.value)
+                            setData('name', e.target.value);
                         }}
                     />
                     <InputError message={errors.name} />
@@ -87,27 +87,28 @@ export default function Subjects({ initialValues, subjects, departments }: { ini
                             <SelectValue placeholder={'Department'}></SelectValue>
                         </SelectTrigger>
                         <SelectContent>
-                            {
-                                departments && 
+                            {departments &&
                                 departments.map((department) => (
                                     <SelectItem key={department.id} value={department.id.toString()}>
                                         {department.name}
                                     </SelectItem>
-                                ))
-}
+                                ))}
                         </SelectContent>
                     </Select>
                     <InputError message={errors.department} />
                 </div>
-                <div className='grid gap-2'>
-                    <Label htmlFor='description'>Description {'Optional' }</Label>
-                    <Textarea placeholder='Description...' cols={3} value={data.description} onChange={(e) => {setData('description',e.target.value);}}/>
-                    
+                <div className="grid gap-2">
+                    <Label htmlFor="description">Description {'Optional'}</Label>
+                    <Textarea
+                        placeholder="Description..."
+                        cols={3}
+                        value={data.description}
+                        onChange={(e) => {
+                            setData('description', e.target.value);
+                        }}
+                    />
                 </div>
-
-                <Button type="submit" variant={'ghost'} className={`${processing ? 'cursor-progress' : 'cursor-pointer'}`}>
-                    {processing ? <Loader className="animate-spin" /> : `${isEdit ? 'Update' : 'Save'}`}
-                </Button>
+                <SubmitButton isEdit={isEdit} processing={processing} />
             </div>
         </form>
     );
