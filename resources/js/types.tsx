@@ -10,6 +10,16 @@ export interface Teacher {
     
 }
 
+export interface Student{
+    id: number, 
+    adm_no: string;
+    first_name: string;
+    sir_name: string;
+    middle_name: string,
+    gender: 'male|female',
+    grade: Grade,
+}
+
 export interface Level {
     id: number;
     name: string;
@@ -25,7 +35,7 @@ export interface Grade{
     id: number;
     name: string;
     level: Level,
-    classTeacher: Teacher;
+    teacher: Teacher;
 }
 
 export interface Subject {

@@ -16,7 +16,7 @@ export default function ({ initialData, departments }: { initialData?: Teacher; 
     const { post, put, data, setData, processing, errors } = useForm({
         first_name: initialData?.first_name || '',
         middle_name: initialData?.middle_name || '',
-        sir_name: initialData?.last_name || '',
+        sir_name: initialData?.sir_name || '',
         email: initialData?.email || '',
         phone: initialData?.phone || '',
         department: initialData?.department?.id || -1,

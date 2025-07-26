@@ -31,7 +31,10 @@ class GradeController extends Controller
 
     public function store(StoreGradeRequest $request)
     {
+      
         $validated = $request->validated();
+        $validated['teacher_id'] = $validated['teacher'];
+        
         $validated['level_id'] = $request['level'];
         $validated['created_by'] = Auth::id();
         $validated['updated_by'] = Auth::id();

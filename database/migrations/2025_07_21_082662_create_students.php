@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('sir_name');
+            $table->enum('gender', ['male', 'female']);
             $table->string('adm_no')->unique();
             $table->foreignId('grade_id')->nullable()->constrained('grades')->onDelete('set null');
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');

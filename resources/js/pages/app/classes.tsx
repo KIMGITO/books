@@ -9,30 +9,18 @@ import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Grade, Level, Teacher } from '@/types';
 import { useForm } from '@inertiajs/react';
 
-interface InitialValue {
-    name: string;
-    level: string;
-    teacher: string;
-}
 
 
 
-interface PageProps {
-    initialValue?: InitialValue;
-    teachers: Teacher[];
-    levels: Level[];
-    classes: Grade[];
-}
 
-export default function SettingsPage({ initialValue, teachers, levels, classes }: PageProps) {
-
-    
+export default function SettingsPage({ initialValue, teachers, levels, classes }: { initialValue: Grade; teachers: Teacher[]; levels: Level[], classes: Grade[]}) {
     const isEdit = initialValue != null;
-
+console.log(classes)
     const { data, setData, errors, post, put, processing } = useForm({
+        id: initialValue?.id || 0,
         name: initialValue?.name || '',
-        level: initialValue?.level || '',
-        teacher: initialValue?.teacher || '',
+        level: initialValue?.level.id|| '',
+        teacher: initialValue?.teacher.id|| '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -61,18 +49,19 @@ export default function SettingsPage({ initialValue, teachers, levels, classes }
             setData('teacher', teacherInput);
         }
     };
-    const headers = ['Level', 'Class Name', 'Teacher', 'Students','Actions'];
-
+    const headers = ['Level', 'Class Name', 'Teacher', 'Students', 'Actions'];
 
     const tableBody = (
         <TableBody>
             {classes != null && classes.length > 0 ? (
                 classes.map((grade, i) => (
                     <TableRow key={i}>
-                        <TableCell>{grade.level?.name} {" "} { grade.level?.description }</TableCell>
+                        <TableCell>
+                            {grade.level?.name} {grade.level?.description}
+                        </TableCell>
                         <TableCell>{grade?.name}</TableCell>
                         <TableCell>
-                            {grade.classTeacher?.first_name} {grade.classTeacher?.last_name}
+                            {grade.teacher?.first_name} {grade.teacher?.sir_name}
                         </TableCell>
                         <TableCell>{60}</TableCell> {/* Added class name */}
                         <TableCell>
@@ -91,7 +80,6 @@ export default function SettingsPage({ initialValue, teachers, levels, classes }
             )}
         </TableBody>
     );
-
 
     const formContent = (
         <form onSubmit={handleSubmit}>
@@ -141,9 +129,9 @@ export default function SettingsPage({ initialValue, teachers, levels, classes }
                             {teachers != null ? (
                                 teachers.map((teacher) => (
                                     <SelectItem key={teacher.id} value={teacher.id.toString()}>
-                                        {' '}
-                                        {/* Added key */}
-                                        {teacher.first_name} {teacher.last_name}
+
+                                       
+                                        {teacher.first_name} {teacher.sir_name}
                                     </SelectItem>
                                 ))
                             ) : (
