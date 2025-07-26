@@ -5,7 +5,7 @@ export interface Teacher {
     middle_name?: string;
     email: string;
     phone: string;
-    department?: Department;
+    department?: number;
     
 }
 
