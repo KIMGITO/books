@@ -8,6 +8,8 @@ import AuthLayout from '@/layouts/auth-layout';
 import { Department, Teacher } from '@/types';
 import { useForm } from '@inertiajs/react';
 
+
+
 export default function ({ initialData, departments }: { initialData?: Teacher; departments?: Department[] }) {
     const isEdit = initialData != null;
 
@@ -17,7 +19,7 @@ export default function ({ initialData, departments }: { initialData?: Teacher; 
         sir_name: initialData?.last_name || '',
         email: initialData?.email || '',
         phone: initialData?.phone || '',
-        department: initialData?.department || -1,
+        department: initialData?.department?.id || -1,
     });
 
     const submit = (e: React.FormEvent) => {
