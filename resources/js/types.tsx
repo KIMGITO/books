@@ -4,7 +4,7 @@ export interface Teacher {
     last_name: string;
 }
 
-export interface CLevel {
+export interface Level {
     id: number;
     name: string;
     description: string;
@@ -18,11 +18,11 @@ export interface Active {
 export interface Grade{
     id: number;
     name: string;
-    level: CLevel,
+    level: Level,
     classTeacher: Teacher;
 }
 
-interface Subject {
+export interface Subject {
     id: number;
     name: string;
     code?: string;

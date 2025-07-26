@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
+import { Level } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { Loader } from 'lucide-react';
 
@@ -13,24 +14,29 @@ interface InitialLevel  {
     description: string;
 }
 
-interface Props {
-    initialLevel?: InitialLevel;
-}
 
-
-export default function Levels({ initialLevel }: Props) {
+export default function Levels({ initialLevel , levels}: {initialLevel?:InitialLevel, levels:Level[]}) {
     const isEdit = initialLevel != null;
-    const tableHeaders = ['#', 'Grade', 'Description'];
+    const tableHeaders = ['#', 'Grade', 'Description', 'Action'];
 
     const tableData = (
         <TableBody className="rounded-2xl">
-            {Array.from({ length: 12 }).map((_, i) => (
-                <TableRow key={i} className="rounded">
-                    <TableCell>{i + 1}</TableCell>
-                    <TableCell>{i + 1}</TableCell>
-                    <TableCell>Form {i + 1}</TableCell>
+            {levels != null ? levels && levels.map((level, index) => (
+                <TableRow key={level.id} className="hover:bg-secondary">
+                    <TableCell className="">{index + 1}</TableCell>
+                    <TableCell className="">{level.name}</TableCell>
+                    <TableCell className="">{level.description}</TableCell>
+                    <TableCell className="hover:underline text-green-500">
+                       MORE
+                    </TableCell>
                 </TableRow>
-            ))}
+            )) :
+                <TableRow>
+                    <TableCell colSpan={tableHeaders.length} className="text-center text-gray-500">
+                        No levels found
+                    </TableCell>
+                </TableRow>
+            }
         </TableBody>
     );
 

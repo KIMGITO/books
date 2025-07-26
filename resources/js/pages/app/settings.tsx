@@ -1,23 +1,22 @@
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
-import Level from './level';
+import Levels from './levels';
 import { Cog} from 'lucide-react';
 import Classes from './classes';
 import Subjects from './subjects';
 import {  router } from '@inertiajs/core';
-import {  Teacher , CLevel, Grade, Department} from '@/types';
+import {  Teacher , Grade, Department, Level} from '@/types';
 import Departments from './departments';
 
 interface Props  {
     departments:Department[]
     active: string;
-    levels: CLevel[];
+    levels: Level[];
     teachers: Teacher[];
     classes: Grade[]
 }
 
 export default function Settings(props: Props,) {
-    console.log(props.classes)
     return (
         <AppLayout>
             <AuthLayout description="Level Settings" title="Settings">
@@ -49,7 +48,7 @@ export default function Settings(props: Props,) {
                         </div>
                     </div>
                     <div className={`${props.active == 'levels' ? '' : 'hidden'}`}>
-                        <Level />
+                        <Levels levels={props.levels}/>
                     </div>
                     <div className={`${props.active == 'departments' ? '' : 'hidden'}`}>
                         <Departments departments={props.departments} />

@@ -17,8 +17,10 @@ class LevelController extends Controller
      */
 
     public function index(){
-    
-        return Inertia::render('app/settings', ['active' => 'levels']);
+
+        $levels = Level::all();
+
+        return Inertia::render('app/settings', ['active' => 'levels', 'levels' => $levels]);
     }
 
     public function store(StoreLevelRequest $request){
