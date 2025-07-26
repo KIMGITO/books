@@ -31,6 +31,7 @@ export default function Levels({ initialLevel , levels}: {initialLevel?:InitialL
                     </TableCell>
                 </TableRow>
             )) :
+                
                 <TableRow>
                     <TableCell colSpan={tableHeaders.length} className="text-center text-gray-500">
                         No levels found
