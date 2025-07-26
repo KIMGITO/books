@@ -12,8 +12,8 @@ use App\Http\Requests\StoreTeacherRequest;
 class TeacherController extends Controller
 {
     public function index(){
-        
-        return Inertia::render('dash/teachers');
+        $teachers = Teacher:: with(['department', 'grade'])-> orderBy('first_name')->get();
+        return Inertia::render('dash/teachers', ['teachers'=>$teachers]);
     }
     public function create(){
         $departments = Department::all();
