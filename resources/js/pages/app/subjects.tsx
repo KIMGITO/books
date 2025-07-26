@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
+import { Textarea } from '@/components/ui/textarea';
+import { Department, Subject } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { Loader } from 'lucide-react';
 
@@ -14,51 +16,40 @@ interface InitialValues{
     department: string;
 }
 
-export default function Subjects({ initialValues }: { initialValues?: InitialValues }) {
+
+
+export default function Subjects({ initialValues, subjects, departments }: { initialValues?: InitialValues; subjects?:Subject[], departments:Department[] }) {
     const isEdit = initialValues != null;
 
+    console.log(subjects);
     // Initial values for the form
     const { data, setData, processing, post, put, errors } = useForm({
         name: initialValues?.name || '',
+        description: initialValues?.description || '',
         code: initialValues?.code || '',
-        department: initialValues?.department || ''
-    })
+        department: initialValues?.department || '',
+    });
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (isEdit) {
-            put(route('subjects.update'))
+            put(route('subjects.update'));
         } else {
-            post(route('subjects.store'));
-        }
-    }
-
-    //set code 
-      const handleCode = (codeInput: string) => {
-          if (codeInput) {
-              setData('code', codeInput);
-              data.code = codeInput;
-          }
-      };
-    // Set subject name
-    const handleName = (nameInput: string) => {
-        if (nameInput) {
-            setData('name', nameInput);
-            data.name = nameInput;
-        }
-    };
-    // Set subject department
-    const handleDepartment = (departmentInput: string) => {
-        if (departmentInput) {
-            setData('department', departmentInput);
-            data.department = departmentInput;
+            post(route('subjects.store'), {
+                onSuccess: () => {
+                    setData({
+                        name: '',
+                        code: '',
+                        description: '',
+                        department: '',
+                    });
+                },
+            });
         }
     };
 
+   
+    const tableHeaders = ['#', 'Code', 'Subject Name', 'Department', 'Action'];
 
-
-
-    const tableHeaders = ['#', 'Subject Name', 'Department'];
-     
     const formData = (
         <form onSubmit={handleSubmit}>
             <div className="grid gap-3">
@@ -70,7 +61,7 @@ export default function Subjects({ initialValues }: { initialValues?: InitialVal
                         type="text"
                         value={data.code}
                         onChange={(e) => {
-                            handleCode(e.target.value);
+                            setData('code', e.target.value)
                         }}
                     />
                     <InputError message={errors.code} />
@@ -84,24 +75,34 @@ export default function Subjects({ initialValues }: { initialValues?: InitialVal
                         type="text"
                         value={data.name}
                         onChange={(e) => {
-                            handleName(e.target.value);
+                            setData('name', e.target.value)
                         }}
                     />
                     <InputError message={errors.name} />
                 </div>
                 <div className="grid gap-2">
                     <Label htmlFor="department"> Department</Label>
-                    <Select onValueChange={(value) => handleDepartment(value)}>
+                    <Select onValueChange={(value) => setData('department', value)}>
                         <SelectTrigger>
-                            <SelectValue placeholder={'Department'}>{data.department}</SelectValue>
+                            <SelectValue placeholder={'Department'}></SelectValue>
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="science">{'Science'}</SelectItem>
-                            <SelectItem value="arts">{'Arts'}</SelectItem>
-                            <SelectItem value="commerce">{'Commerce'}</SelectItem>
+                            {
+                                departments && 
+                                departments.map((department) => (
+                                    <SelectItem key={department.id} value={department.id.toString()}>
+                                        {department.name}
+                                    </SelectItem>
+                                ))
+}
                         </SelectContent>
                     </Select>
                     <InputError message={errors.department} />
+                </div>
+                <div className='grid gap-2'>
+                    <Label htmlFor='description'>Description {'Optional' }</Label>
+                    <Textarea placeholder='Description...' cols={3} value={data.description} onChange={(e) => {setData('description',e.target.value);}}/>
+                    
                 </div>
 
                 <Button type="submit" variant={'ghost'} className={`${processing ? 'cursor-progress' : 'cursor-pointer'}`}>
@@ -112,20 +113,28 @@ export default function Subjects({ initialValues }: { initialValues?: InitialVal
     );
 
     const tableData = (
-        <TableBody className='rounded-2xl'>
-           { Array.from({length: 12}).map((_,i) => {
-                return (
-                    <TableRow key={i} className="rounded">
-                        <TableCell>{i + 1}</TableCell>
-                        <TableCell>Subject {i + 1}</TableCell>
-                        <TableCell>Department {i + 1}</TableCell>
+        <TableBody className="rounded-2xl">
+            {
+                subjects != null ? 
+                    subjects && 
+                    subjects.map((subjects, i) => (
+                        <TableRow key={subjects.id} className="hover:bg-secondary">
+                            <TableCell className="">{i + 1}</TableCell>
+                            <TableCell>{ subjects.code }</TableCell>
+                            <TableCell className="">{subjects.name}</TableCell>
+                            <TableCell className="">{subjects.department?.name}</TableCell>
+                            <TableCell className="text-green-500 hover:underline">MORE</TableCell>
+                        </TableRow>
+                    )) :
+                    <TableRow className="hover:bg-secondary">
+                        <TableCell colSpan={tableHeaders.length} className="text-center text-gray-500">No subjects available</TableCell>
                     </TableRow>
-                );
-            }) }
+                
+            }
         </TableBody>
     );
 
     return (
-        <TableWithForm formContent={formData} formTitle='Add A Subject' tableData={tableData} tableHeaders={tableHeaders}  tableTitle='All Subjects' />
+        <TableWithForm formContent={formData} formTitle="Add A Subject" tableData={tableData}  tableHeaders={tableHeaders} tableTitle="All Subjects" />
     );
 }

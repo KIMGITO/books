@@ -21,11 +21,12 @@ class StoreSubjectRequest extends FormRequest
      */
     public function rules(): array
     {
+
+    
         return [
             'name' => 'required|string|min:3|max:50|unique:subjects,name',
             'code' => 'required|string|min:2|max:10|unique:subjects,code',
             'description' => 'nullable|string|max:255',
-            'level' => 'required|integer|exists:levels,id',
             'department' => 'required|integer|exists:departments,id',
         ];
     }

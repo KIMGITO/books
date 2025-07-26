@@ -17,7 +17,7 @@ interface InitialValue {
 
 
 export default function Departments({ initialValue, departments }: { initialValue?: InitialValue, departments?:Department[] }) {
-    console.log(departments);
+
     const isEdit = initialValue != null;
 
     const { data, setData, errors, post, put, processing } = useForm({

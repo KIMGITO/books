@@ -13,7 +13,7 @@ interface TableWithFormProps {
     scrollHeight?: string;
 }
 
-export function TableWithForm({ tableTitle, formTitle, tableHeaders, tableData, formContent, scrollHeight = 'h-[300px]' }: TableWithFormProps) {
+export function TableWithForm({ tableTitle, formTitle, tableHeaders, tableData, formContent, scrollHeight = 'h-[150px] md:h-[300px]' }: TableWithFormProps) {
    
     return (
         <div className="flex h-full flex-1 flex-col gap-4 p-1">
