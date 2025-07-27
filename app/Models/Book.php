@@ -25,6 +25,10 @@ class Book extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function level(){
+        return $this->belongsTo(Level::class, 'level_id');
+    }
     public function updatedByUser()
     {
         return $this->belongsTo(User::class, 'updated_by');

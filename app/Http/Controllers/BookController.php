@@ -12,10 +12,17 @@ use Inertia\Inertia;
 
 class BookController extends Controller
 {
-    public function index() {
+
+    public function filter($active){
+        return $this->index($active);
+    }
+    public function index($active = '1') {
+        $subjects = Subject::all();
+        $books = Book:: with(['level', 'subject'])->where('subject_id', $active)-> orderBy('subject_id', 'asc')->get();
         return Inertia::render('dash/books', [
-            'active' => 'English',
-            // 'books' => \App\Models\Book::with(['subject', 'department'])->get(),
+            'books' => $books,
+            'subjects' => $subjects,
+            'active' => $active,
         ]);
     }
 

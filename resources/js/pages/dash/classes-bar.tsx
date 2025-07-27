@@ -13,14 +13,14 @@ export default function ClassesBar({ active, grades }: { active?: string, grades
                     {grades &&
                         grades.map((grade, i) =>
                             grade.id.toString() == active ? (
-                                <div className="border-rounded border-b border-b-green-400 bg-gray-400/30 px-2  text-green-500 text-center" key={i}>
-                                    {grade.id}
+                                <div className="uppercase border-rounded border-b border-b-green-400 bg-gray-400/30 px-2  text-green-500 text-center" key={i}>
+                                    {grade.short_name}
                                 </div>
                             ) : (
                                 <a href={route('students.filter', grade.id)}>
                                     {' '}
-                                    <div className="rounded bg-gray-400 px-2 text-center" key={i}>
-                                        {grade.id}
+                                    <div className="uppercase rounded bg-gray-400 px-2 text-center" key={i}>
+                                        {grade.short_name}
                                     </div>
                                 </a>
                             ),

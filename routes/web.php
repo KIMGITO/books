@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/books-issue', IssueController::class);
     Route::get('/book-return', [IssueController::class, 'return'])->name('book.return');
     Route::get('/class/{id}/students', [StudentController::class, 'filter'])->name('students.filter');
+    Route::get('/Subject/{id}/books', [BookController::class, 'filter'])->name('books.filter');
 });
 
 require __DIR__.'/settings.php';
