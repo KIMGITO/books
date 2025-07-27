@@ -34,6 +34,7 @@ class StudentController extends Controller
 
     public function store(StoreStudentRequest $request)
     {
+       
         $validated = $request->validated();
         $validated['created_by'] = Auth::id();
         $validated['updated_by'] = Auth::id();

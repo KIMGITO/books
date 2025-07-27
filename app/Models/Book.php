@@ -8,10 +8,11 @@ class Book extends Model
 {
     protected $fillable = [
         'title',
-        'level',
-        'subject',
-        'summary',
+        'subject_id',
+        'quantity' ,
+        'description',
         'cover_image',
+        'level_id',
         'created_by',
         'updated_by',
     ];

@@ -20,6 +20,16 @@ export interface Student{
     grade: Grade,
 }
 
+
+export interface Book{
+    id: number;
+    title: string;
+    subject: Subject ;
+    level: Level ;
+    quantity: number;
+    cover_image?: string;
+    description?: string;
+}
 export interface Level {
     id: number;
     name: string;

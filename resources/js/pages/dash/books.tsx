@@ -4,6 +4,7 @@ import AppLayout from '@/layouts/app-layout';
 import ClassesBar from './classes-bar';
 
 export default function Books() {
+
     return (
         <AppLayout>
             <div className="p-4">
@@ -11,7 +12,7 @@ export default function Books() {
                 <p className="mt-2 text-gray-600">View And Manage Books records and details.</p>
                 <div className="mt-6 flex flex-col items-center justify-center">
                     <div className="w-11/12 rounded-2xl border p-2 md:w-fit">
-                        <ClassesBar />
+                        {/* <ClassesBar /> */}
                         <div className="w-full border-t border-t-gray-600"></div>
                         <ScrollArea>
                             <Table className="w-1/2 py-2">
