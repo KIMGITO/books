@@ -23,7 +23,7 @@ class StoreGradeRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:grades,name|string|min:3|max:20',
-            'short_name' => 'required|string|min:2|max:5|unique|grades,short_name',
+            'short_name' => 'required|string|min:2|max:5|unique:grades,short_name',
             'teacher' => 'nullable|exists:teachers,id',
             'level' => 'required|numeric|exists:levels,id'
         ];
