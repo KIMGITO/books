@@ -14,16 +14,20 @@ class StudentController extends Controller
 {
 
 
-    public function index(){
-        return Inertia::render('dash/students', ['active' => 'f1']);
+    public function index()
+    {
+        $students = Student::with(['grade'])->orderBy('grade_id','asc')-> get();
+        return Inertia::render('dash/students', ['active' => 'f1', 'students' => $students]);
     }
-    public function create(){
+    public function create()
+    {
         $grades = Grade::orderBy('name')->get();
-        
-        return Inertia::render('models/student-create', ['grades' =>$grades]);
+
+        return Inertia::render('models/student-create', ['grades' => $grades]);
     }
 
-    public function store(StoreStudentRequest $request){
+    public function store(StoreStudentRequest $request)
+    {
         $validated = $request->validated();
         $validated['created_by'] = Auth::id();
         $validated['updated_by'] = Auth::id();

@@ -2,8 +2,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AppLayout from '@/layouts/app-layout';
 import ClassesBar from './classes-bar';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Student } from '@/types';
 
-export default function Students() {
+export default function Students({students}:{students:Student[]}) {
     return (
         <AppLayout>
             <div className="p-4">
@@ -20,24 +21,28 @@ export default function Students() {
                                     <TableHead>ADM.No</TableHead>
                                     <TableHead>Name</TableHead>
                                     <TableHead>Class</TableHead>
-                                    <TableHead>Subjects Taken</TableHead>
+                                    <TableHead>Gender</TableHead>
                                     <TableHead>Books Owed</TableHead>
                                     <TableHead className="text-end">Actions</TableHead>
                                 </TableHeader>
                                 <TableBody>
-                                    {Array.from({ length: 5 }).map(() => (
+                                    {students  != null ?  students && students.map((student, i) => (
                                         <TableRow className="text-center">
-                                            <TableCell>1</TableCell>
-                                            <TableCell>1161</TableCell>
-                                            <TableCell>dennis kimanthi</TableCell>
-                                            <TableCell>form 4</TableCell>
-                                            <TableCell className="">english, maths, chemistry, geography, physics</TableCell>
+                                            <TableCell>{ i+1 }</TableCell>
+                                            <TableCell>{student.adm_no}</TableCell>
+                                            <TableCell> { student.first_name } { student.middle_name } {student.sir_name} </TableCell>
+                                            <TableCell>{student.grade?.name}</TableCell>
+                                            <TableCell className="">{student.gender}</TableCell>
                                             <TableCell>10</TableCell>
                                             <TableCell className="text-right">
                                                 <button className="ml-2 text-green-500 hover:underline">More</button>
                                             </TableCell>
                                         </TableRow>
-                                    ))}
+                                    )) : 
+                                        <TableRow>
+                                            <TableCell  colSpan={7} > No student found</TableCell>
+                                        </TableRow>
+                                    }
                                 </TableBody>
                             </Table>
                             <ScrollBar orientation='horizontal' className='mt-6' />
