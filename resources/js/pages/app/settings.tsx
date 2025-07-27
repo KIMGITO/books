@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import Levels from './levels';
-import { Cog} from 'lucide-react';
+import { Cog, House, Languages, LineChart, SquareStackIcon} from 'lucide-react';
 import Classes from './classes';
 import Subjects from './subjects';
 import {  router } from '@inertiajs/core';
@@ -28,25 +28,25 @@ export default function Settings(props: Props,) {
                             className={`${props.active == 'departments' ? 'flex justify-between gap-4 border-b-2 border-b-green-900 bg-secondary px-2 py-1 align-baseline text-xs text-green-400' : 'flex justify-between gap-4 border-purple-600 cursor-pointer bg-secondary px-2 py-1 align-baseline text-xs text-purple-400 hover:text-green-800 hover:border-b hover:border-b-green-800'}`}
                             onClick={() => {router.get('/departments')}}
                         >
-                            <Cog className="" size={15} /> <p>Departments </p>
+                            <SquareStackIcon className="" size={15} /> <p>Departments </p>
                         </div>
                         <div
                             className={`${props.active == 'subjects' ? 'flex justify-between gap-4 border-b-2 border-b-green-900 bg-secondary px-2 py-1 align-baseline text-xs text-green-400' : 'flex justify-between gap-4 border-purple-600 cursor-pointer bg-secondary px-2 py-1 align-baseline text-xs text-purple-400 hover:text-green-800 hover:border-b hover:border-b-green-800'}`}
                             onClick={() => {router.get('/subjects')}}
                         >
-                            <Cog className="" size={15} /> <p>Subjects </p>
+                            <Languages className="" size={15} /> <p>Subjects </p>
                         </div>
                         <div
                             className={`${props.active == 'levels' ? 'flex justify-between gap-4 border-b-2 border-b-green-900 bg-secondary px-2 py-1 align-baseline text-xs text-green-400' : 'flex justify-between gap-4 border-purple-600 cursor-pointer bg-secondary px-2 py-1 align-baseline text-xs text-purple-400 hover:text-green-800 hover:border-b hover:border-b-green-800'}`}
                             onClick={() => {router.get('/levels')}}
                         >
-                            <Cog className="" size={15} /> <p>Levels </p>
+                            <LineChart className="" size={15} /> <p>Levels </p>
                         </div>
                         <div
                             className={`${props.active == 'classes' ? 'flex justify-between gap-4 border-b-2 border-b-green-900 bg-secondary px-2 py-1 align-baseline text-xs text-green-400' : 'flex justify-between gap-4 border-purple-600 cursor-pointer bg-secondary px-2 py-1 align-baseline text-xs text-purple-400 hover:text-green-800 hover:border-b hover:border-b-green-800'}`}
                             onClick={() => {router.get('/grades')}}
                         >
-                            <Cog className="" size={15} /> <p>Classes </p>
+                            <House className="" size={15} /> <p>Classes </p>
                         </div>
                     </div>
                     <div className={`${props.active == 'levels' ? '' : 'hidden'}`}>

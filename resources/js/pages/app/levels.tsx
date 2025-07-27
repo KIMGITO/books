@@ -48,28 +48,29 @@ export default function Levels({ initialLevel , levels}: {initialLevel?:InitialL
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (isEdit) {
-            put('levels');
+            put(route('levels.update'), {
+                onSuccess: () => {
+                    setData({
+                        name: "",
+                        description:''
+                    })
+                }
+            })
         } else {
-            post('/levels');
+            post(route('levels.store'), {
+                onSuccess: () => {
+                    setData({
+                        name: '',
+                        description: '',
+                    });
+                },
+            });
         }
         
     };
 
     //set Level name
 
-    const handleName = (nameInput: string) => {
-        if (nameInput) {
-            setData('name', nameInput);
-            data.name = nameInput;
-        }
-    };
-    //set description
-    const handleDescription = (descriptionInput: string) => {
-        if (descriptionInput) {
-            setData('description', descriptionInput);
-            data.description = descriptionInput;
-        }
-    };
 
     const formData = (
         <form onSubmit={handleSubmit}>
@@ -82,7 +83,7 @@ export default function Levels({ initialLevel , levels}: {initialLevel?:InitialL
                         type="number"
                         value={data.name}
                         onChange={(e) => {
-                            handleName(e.target.value);
+                            setData( 'name',e.target.value);
                         }}
                     />
                     <InputError message={errors.name} />
@@ -95,7 +96,7 @@ export default function Levels({ initialLevel , levels}: {initialLevel?:InitialL
                         rows={3}
                         value={data.description}
                         onChange={(e) => {
-                            handleDescription(e.target.value);
+                            setData('description',e.target.value);
                         }}
                     />
                     <InputError message={errors.description} />

@@ -31,25 +31,8 @@ console.log(classes)
             post('/grades');
         }
     };
-    //set Class level
-    const handleLevel = (levelInput: string) => {
-        if (levelInput) {
-            setData('level', levelInput);
-        }
-    };
-
-    const handleName = (nameInput: string) => {
-        if (nameInput) {
-            setData('name', nameInput);
-        }
-    };
-
-    const handleTeacher = (teacherInput: string) => {
-        if (teacherInput) {
-            setData('teacher', teacherInput);
-        }
-    };
-    const headers = ['Level', 'Class Name', 'Teacher', 'Students', 'Actions'];
+   
+    const headers = ['#', 'Level', 'Class Name', 'Class Teacher', 'Students', 'Actions'];
 
     const tableBody = (
         <TableBody>
@@ -57,7 +40,10 @@ console.log(classes)
                 classes.map((grade, i) => (
                     <TableRow key={i}>
                         <TableCell>
-                            {grade.level?.name} {grade.level?.description}
+                            {i+1}
+                        </TableCell>
+                        <TableCell>
+                            {grade.level?.name} 
                         </TableCell>
                         <TableCell>{grade?.name}</TableCell>
                         <TableCell>
@@ -86,14 +72,14 @@ console.log(classes)
             <div className="grid gap-3">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Name</Label>
-                    <Input placeholder="e.g. 1" id="name" value={data.name} onChange={(e) => handleName(e.target.value)} />
+                    <Input placeholder="e.g. 1" id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} />
                     <InputError message={errors.name} />
                 </div>
                 <div className="grid gap-4">
                     <Label htmlFor="level">Class Level</Label>
                     <Select
                         onValueChange={(value) => {
-                            handleLevel(value);
+                            setData('level', value);
                         }}
                     >
                         <SelectTrigger>
@@ -119,7 +105,7 @@ console.log(classes)
                     <Label htmlFor="teacher">Class Teacher</Label>
                     <Select
                         onValueChange={(value) => {
-                            handleTeacher(value);
+                            setData('teacher', value);
                         }}
                     >
                         <SelectTrigger>
@@ -129,8 +115,6 @@ console.log(classes)
                             {teachers != null ? (
                                 teachers.map((teacher) => (
                                     <SelectItem key={teacher.id} value={teacher.id.toString()}>
-
-                                       
                                         {teacher.first_name} {teacher.sir_name}
                                     </SelectItem>
                                 ))

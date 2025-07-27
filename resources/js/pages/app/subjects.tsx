@@ -48,7 +48,7 @@ export default function Subjects({ initialValues, subjects, departments }: { ini
     };
 
    
-    const tableHeaders = ['#', 'Code', 'Subject Name', 'Department', 'Action'];
+    const tableHeaders = ['#', 'Code', 'Subject Name', 'Department','Description', 'Action'];
 
     const formData = (
         <form onSubmit={handleSubmit}>
@@ -115,23 +115,26 @@ export default function Subjects({ initialValues, subjects, departments }: { ini
 
     const tableData = (
         <TableBody className="rounded-2xl">
-            {
-                subjects != null ? 
-                    subjects && 
-                    subjects.map((subjects, i) => (
-                        <TableRow key={subjects.id} className="hover:bg-secondary">
-                            <TableCell className="">{i + 1}</TableCell>
-                            <TableCell>{ subjects.code }</TableCell>
-                            <TableCell className="">{subjects.name}</TableCell>
-                            <TableCell className="">{subjects.department?.name}</TableCell>
-                            <TableCell className="text-green-500 hover:underline">MORE</TableCell>
-                        </TableRow>
-                    )) :
-                    <TableRow className="hover:bg-secondary">
-                        <TableCell colSpan={tableHeaders.length} className="text-center text-gray-500">No subjects available</TableCell>
+            {subjects != null ? (
+                subjects &&
+                subjects.map((subjects, i) => (
+                    <TableRow key={subjects.id} className="hover:bg-secondary">
+                        <TableCell className="">{i + 1}</TableCell>
+                        <TableCell>{subjects.code}</TableCell>
+                        <TableCell className="">{subjects.name}</TableCell>
+                        <TableCell className="">{subjects.department?.name}</TableCell>
+                        <TableCell className="">{subjects.description}</TableCell>
+
+                        <TableCell className="text-green-500 hover:underline">MORE</TableCell>
                     </TableRow>
-                
-            }
+                ))
+            ) : (
+                <TableRow className="hover:bg-secondary">
+                    <TableCell colSpan={tableHeaders.length} className="text-center text-gray-500">
+                        No subjects available
+                    </TableCell>
+                </TableRow>
+            )}
         </TableBody>
     );
 

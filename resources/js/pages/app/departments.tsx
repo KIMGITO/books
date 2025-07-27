@@ -1,22 +1,19 @@
-import { TableWithForm } from "@/components/app-setting";
-import InputError from "@/components/input-error";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import SubmitButton from "@/components/ui/submit-button";
-import {  TableBody, TableRow, TableCell } from "@/components/ui/table";
-import { Textarea } from "@/components/ui/textarea";
-import { Department } from "@/types";
-import { useForm } from "@inertiajs/react";
+import { TableWithForm } from '@/components/app-setting';
+import InputError from '@/components/input-error';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import SubmitButton from '@/components/ui/submit-button';
+import { TableBody, TableCell, TableRow } from '@/components/ui/table';
+import { Textarea } from '@/components/ui/textarea';
+import { Department } from '@/types';
+import { useForm } from '@inertiajs/react';
 
 interface InitialValue {
     name: string;
     description?: string;
 }
 
-
-
-export default function Departments({ initialValue, departments }: { initialValue?: InitialValue, departments?:Department[] }) {
-
+export default function Departments({ initialValue, departments }: { initialValue?: InitialValue; departments?: Department[] }) {
     const isEdit = initialValue != null;
 
     const { data, setData, errors, post, put, processing } = useForm({
@@ -27,29 +24,23 @@ export default function Departments({ initialValue, departments }: { initialValu
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (isEdit) {
-            put('/departments');
+            put(route('departments.update'), {
+                onSuccess: () => {
+                    setData({
+                        name: '',
+                        description: '',
+                    });
+                },
+            });
         } else {
-            post('/departments');
+            post(route('departments.store'), {
+                onSuccess: () => {
+                    setData({ name: '', description: '' });
+                },
+            });
         }
     };
-    // Set department name
-    const handleName = (nameInput: string) => {
-        if (nameInput) {
-            setData('name', nameInput);
-            
-        }
-    };
-    // Set department description
-    const handleDescription = (descriptionInput: string) => {
-        if (descriptionInput) {
-            setData('description', descriptionInput);
-            data.description = descriptionInput;
-        }
-    };
-
-
-
-
+   
 
     const tableHeads = ['#', 'Name', 'Subjects', 'Description'];
     const tableBody = (
@@ -75,7 +66,7 @@ export default function Departments({ initialValue, departments }: { initialValu
                 ))
             ) : (
                 <TableRow>
-                    <TableCell colSpan={tableHeads.length} className="text-center ">
+                    <TableCell colSpan={tableHeads.length} className="text-center">
                         No departments found
                     </TableCell>
                 </TableRow>
@@ -93,7 +84,7 @@ export default function Departments({ initialValue, departments }: { initialValu
                         type="text"
                         value={data.name}
                         onChange={(e) => {
-                            handleName(e.target.value);
+                            setData('name', e.target.value);
                         }}
                     />
                     <InputError message={errors.name} />
@@ -107,7 +98,7 @@ export default function Departments({ initialValue, departments }: { initialValu
                         rows={3}
                         value={data.description}
                         onChange={(e) => {
-                            handleDescription(e.target.value);
+                            setData('description',e.target.value);
                         }}
                     />
                     <InputError message={errors.description} />

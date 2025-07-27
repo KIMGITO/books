@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null');
 
-            $table->index(['created_by', 'updated_by'], 'students_user_index');
+            $table->index(['created_by', 'updated_by','grade_id'], 'students_user_index');
             
         });
     }
