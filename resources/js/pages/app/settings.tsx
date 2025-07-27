@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import Levels from './levels';
-import { Cog, House, Languages, LineChart, SquareStackIcon} from 'lucide-react';
+import {  House, Languages, LineChart, SquareStackIcon} from 'lucide-react';
 import Classes from './classes';
 import Subjects from './subjects';
 import {  router } from '@inertiajs/core';

@@ -6,7 +6,8 @@ import { Teacher } from "@/types";
 
 
 export default function Teachers
-    ({teachers} : {teachers:Teacher[]}) {
+    ({ teachers }: { teachers: Teacher[] }) {
+    
     return (
         <AppLayout>
             <div className="p-4">
@@ -20,7 +21,7 @@ export default function Teachers
                                     <TableHead>#</TableHead>
                                     <TableHead>Name</TableHead>
                                     <TableHead>Department</TableHead>
-                                    <TableHead>Role</TableHead>
+                                    <TableHead>Class Teacher</TableHead>
                                     <TableHead className="text-end">Actions</TableHead>
                                 </TableHeader>
                                 <TableBody>
@@ -31,7 +32,7 @@ export default function Teachers
                                                 <TableCell>{i + 1}</TableCell>
                                                 <TableCell>{`${teacher.first_name} ${teacher.middle_name ? teacher.middle_name + ' ' : ''}${teacher?.sir_name}`}</TableCell>
                                                 <TableCell>{teacher.department?.name}</TableCell>
-                                                <TableCell>{teacher.grade != null ? `Class teacher ${teacher.grade.name}` : '- -'}</TableCell>
+                                                <TableCell>{teacher.grade != null ? `${teacher.grade.name}` : '- -'}</TableCell>
                                                 <TableCell className=" text-end text-green-500 hover:underline">MORE</TableCell>
                                             </TableRow>
                                         ))

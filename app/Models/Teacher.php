@@ -26,6 +26,6 @@ class Teacher extends Model
     }
     public function grade()
     {
-        return $this->belongsTo(Grade::class);
+        return $this->hasOne(Grade::class);
     }
 }

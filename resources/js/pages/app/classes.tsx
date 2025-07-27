@@ -13,14 +13,14 @@ import { useForm } from '@inertiajs/react';
 
 
 
-export default function SettingsPage({ initialValue, teachers, levels, classes }: { initialValue: Grade; teachers: Teacher[]; levels: Level[], classes: Grade[]}) {
-    const isEdit = initialValue != null;
+export default function SettingsPage({ initialData, teachers, levels, classes }: { initialData?: Grade; teachers: Teacher[]; levels: Level[], classes: Grade[]}) {
+    const isEdit = initialData != null;
 console.log(classes)
     const { data, setData, errors, post, put, processing } = useForm({
-        id: initialValue?.id || 0,
-        name: initialValue?.name || '',
-        level: initialValue?.level.id|| '',
-        teacher: initialValue?.teacher.id|| '',
+        id: initialData?.id || 0,
+        name: initialData?.name || '',
+        level: initialData?.level.id|| '',
+        teacher: initialData?.teacher.id|| '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
