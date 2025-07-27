@@ -1,6 +1,5 @@
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Grade } from '@/types';
-import { router } from '@inertiajs/react';
 
 export default function ClassesBar({ active, grades }: { active?: string, grades: Grade[]}) {
   
