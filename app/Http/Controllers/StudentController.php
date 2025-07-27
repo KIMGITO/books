@@ -13,11 +13,17 @@ use App\Http\Requests\StudentStoreRequest;
 class StudentController extends Controller
 {
 
+    public function filter($class = 1){
+        return $this->index($class);
+    }
 
-    public function index()
+
+    public function index($class=1)
     {
-        $students = Student::with(['grade'])->orderBy('grade_id','asc')-> get();
-        return Inertia::render('dash/students', ['active' => 'f1', 'students' => $students]);
+        // dd($class);
+        $grades = Grade::orderBy('level_id', 'asc')->get();
+        $students = Student::with(['grade'])->where('grade_id', $class)->orderBy('grade_id', 'asc')->get();
+        return Inertia::render('dash/students', ['active' => $class, 'students' => $students, 'grades' => $grades]);
     }
     public function create()
     {

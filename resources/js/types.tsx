@@ -34,6 +34,7 @@ export interface Active {
 export interface Grade{
     id: number;
     name: string;
+    short_name: string,
     level: Level,
     teacher: Teacher;
 }

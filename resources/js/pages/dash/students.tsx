@@ -2,9 +2,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AppLayout from '@/layouts/app-layout';
 import ClassesBar from './classes-bar';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { Student } from '@/types';
+import { Grade, Student } from '@/types';
 
-export default function Students({students}:{students:Student[]}) {
+export default function Students({students, active,  grades}:{students:Student[], active: string, grades:Grade[]}) {
     return (
         <AppLayout>
             <div className="p-4">
@@ -12,7 +12,7 @@ export default function Students({students}:{students:Student[]}) {
                 <p className="mt-2 text-gray-600">View And Manage Student records and details.</p>
                 <div className="mt-6 flex flex-col items-center justify-center">
                     <div className="w-11/12 rounded-2xl border p-2 md:w-fit">
-                        <ClassesBar />
+                        <ClassesBar active={active} grades={grades} />
                         <div className="w-full border-t border-t-gray-600"></div>
                         <ScrollArea>
                             <Table className="w-1/2 py-2">
@@ -26,7 +26,7 @@ export default function Students({students}:{students:Student[]}) {
                                     <TableHead className="text-end">Actions</TableHead>
                                 </TableHeader>
                                 <TableBody>
-                                    {students  != null ?  students && students.map((student, i) => (
+                                    {students.length != 0 ?  students && students.map((student, i) => (
                                         <TableRow className="text-center">
                                             <TableCell>{ i+1 }</TableCell>
                                             <TableCell>{student.adm_no}</TableCell>
@@ -40,7 +40,7 @@ export default function Students({students}:{students:Student[]}) {
                                         </TableRow>
                                     )) : 
                                         <TableRow>
-                                            <TableCell  colSpan={7} > No student found</TableCell>
+                                            <TableCell className='text-center'  colSpan={7} > No student found</TableCell>
                                         </TableRow>
                                     }
                                 </TableBody>

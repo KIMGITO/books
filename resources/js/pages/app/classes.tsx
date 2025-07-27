@@ -19,6 +19,7 @@ console.log(classes)
     const { data, setData, errors, post, put, processing } = useForm({
         id: initialData?.id || 0,
         name: initialData?.name || '',
+        short_name: initialData?.short_name  || '',
         level: initialData?.level.id|| '',
         teacher: initialData?.teacher.id|| '',
     });
@@ -26,9 +27,29 @@ console.log(classes)
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (isEdit) {
-            put('/grades');
+            put(route('grades.update'), {
+                onSuccess: () => {
+                    setData({
+                        id: -1,
+                        name: '',
+                        short_name: '',
+                        level: '',
+                        teacher:'',
+                    })
+                }
+            })
         } else {
-            post('/grades');
+            post(route('grades.store'), {
+                onSuccess: () => {
+                    setData({
+                        id: -1,
+                        name: '',
+                        short_name:'',
+                        level: '',
+                        teacher: '',
+                    });
+                },
+            });
         }
     };
    
@@ -71,11 +92,16 @@ console.log(classes)
         <form onSubmit={handleSubmit}>
             <div className="grid gap-3">
                 <div className="grid gap-2">
-                    <Label htmlFor="name">Name</Label>
+                    <Label htmlFor="name">Full Name</Label>
                     <Input placeholder="e.g. 1" id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} />
                     <InputError message={errors.name} />
                 </div>
-                <div className="grid gap-4">
+                <div className='grid gap-2'>
+                    <Label htmlFor='short_name'>Short Name</Label>
+                    <Input placeholder='e.g 1 E' id='short_name' className='uppercase' value={data.short_name} onChange={(e) => setData('short_name', e.target.value)} />
+                    <InputError message={errors.short_name}/>
+                </div>
+                <div className="grid gap-2">
                     <Label htmlFor="level">Class Level</Label>
                     <Select
                         onValueChange={(value) => {
@@ -139,7 +165,6 @@ console.log(classes)
             tableHeaders={headers}
             tableData={tableBody}
             formContent={formContent}
-            scrollHeight="h-[200px]"
         />
     );
 }
