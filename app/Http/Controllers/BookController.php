@@ -13,12 +13,19 @@ use Inertia\Inertia;
 class BookController extends Controller
 {
 
-    public function filter($active){
+    public function filter($active)
+    {
         return $this->index($active);
     }
-    public function index($active = '1') {
+    public function index($active = '1')
+    {
         $subjects = Subject::all();
-        $books = Book:: with(['level', 'subject'])->where('subject_id', $active)-> orderBy('subject_id', 'asc')->get();
+        $books = Book::with(['level', 'subject'])
+        ->where('subject_id', $active)->
+        orderBy('subject_id', 'asc')
+        ->orderBy('title', 'asc')
+        ->orderBy('level_id', 'asc')
+        ->get();
         return Inertia::render('dash/books', [
             'books' => $books,
             'subjects' => $subjects,
@@ -26,17 +33,19 @@ class BookController extends Controller
         ]);
     }
 
-    public function create(){
+    public function create()
+    {
         $subjects = Subject::all();
         $levels = Level::all();
         return Inertia::render('models/book-create', [
-            'subjects'=>$subjects,
-            'levels'=> $levels
+            'subjects' => $subjects,
+            'levels' => $levels
         ]);
     }
 
 
-    public function store(StoreBookRequest $request){
+    public function store(StoreBookRequest $request)
+    {
         // dd($request);
         $validated = $request->validated();
         $validated['subject_id'] = $validated['subject'];
@@ -47,7 +56,5 @@ class BookController extends Controller
         $book = Book::create($validated);
 
         return redirect()->route('books.create')->with(['success' => 'Book created successfully.']);
-
-
     }
 }

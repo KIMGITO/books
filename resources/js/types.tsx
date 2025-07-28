@@ -16,7 +16,8 @@ export interface Student{
     first_name: string;
     sir_name: string;
     middle_name: string,
-    gender: 'male|female',
+    grade_id: number,
+    gender: 'male'|'female',
     grade: Grade,
 }
 

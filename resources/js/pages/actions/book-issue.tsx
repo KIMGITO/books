@@ -1,83 +1,95 @@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
-import { useState } from 'react';
+import { Book, Grade, Student } from '@/types';
+import { Scrollbar } from '@radix-ui/react-scroll-area';
+import { useEffect, useMemo, useState } from 'react';
 
-export default function BookIssueForm() {
-    // Sample data
-    const [students, setStudents] = useState([
-        { admNo: '1001', name: 'John Doe', class: '1 East', selected: false, bookNumber: '' },
-        { admNo: '1002', name: 'Jane Smith', class: '1 East', selected: false, bookNumber: '' },
-        { admNo: '1003', name: 'Michael Johnson', class: '1 West', selected: false, bookNumber: '' },
-        { admNo: '1004', name: 'Emily Williams', class: '2 East', selected: false, bookNumber: '' },
-    ]);
+interface BookIssueFormProps {
+    books: Book[];
+    students: Student[];
+    grades: Grade[];
+}
 
-    const [bookData, setBookData] = useState({
-        title: 'Mathematics book 1',
-        grade: 'Grade 1',
-        available: 22,
-    });
+export default function BookIssueForm({ books = [], students = [], grades = [] }: BookIssueFormProps) {
+    // State
 
-    const [filters, setFilters] = useState({
-        class: '',
-        admNo: '',
-        search: '',
-    });
+    
 
-    const [checkAll, setCheckAll] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedGradeId, setSelectedGradeId] = useState<string>(grades[0]?.id.toString());
+    const [studentSelections, setStudentSelections] = useState<Record<string, boolean>>({});
+    const [bookNumbers, setBookNumbers] = useState<Record<string, string>>({});
+    const [selectedBookId, setSelectedBookId] = useState<number | null>(null);
 
-    // Filter students based on filters
-    const filteredStudents = students.filter((student) => {
-        return (
-            (filters.class === '' || student.class === filters.class) &&
-            (filters.admNo === '' || student.admNo.includes(filters.admNo)) &&
-            (filters.search === '' || student.name.toLowerCase().includes(filters.search.toLowerCase()) || student.admNo.includes(filters.search))
-        );
-    });
+    // Filter books by search term (title and department)
+    const filteredBooks = useMemo(() => {
+        const searchLower = searchTerm.toLowerCase().trim();
+        return books.filter((book) => {
+            const titleMatch = book.title.toLowerCase().includes(searchLower);
+            const departmentMatch = book.subject?.name?.toLowerCase().includes(searchLower);
+            return titleMatch || departmentMatch;
+        });
+    }, [books, searchTerm]);
+
+    
+    // Get selected book
+    const selectedBook = useMemo(() => {
+        
+        return filteredBooks.find((book) => book.id === selectedBookId) || (filteredBooks.length > 0 ? filteredBooks[0] : null);
+    }, [filteredBooks, selectedBookId]);
+
+   
+    // Calculate remaining quantity
+    const remainingQuantity = selectedBook ? selectedBook.quantity - Object.values(studentSelections).filter(Boolean).length : 0;
+
+
+    // Filter students by grade ID - FIXED VERSION
+    const filteredStudents = useMemo(() => {
+        if (selectedGradeId === '1') return students;
+        console.log(students)
+        return students.filter((student) => student.grade_id.toString() === selectedGradeId);
+    }, [students, selectedGradeId]);
+
+    // Reset selections when book changes
+    useEffect(() => {
+        setStudentSelections({});
+        setBookNumbers({});
+    }, [selectedBook]);
 
     // Handlers
-    const handleCheckAll = (checked: boolean) => {
-        setCheckAll(checked);
-        setStudents(
-            students.map((student) => ({
-                ...student,
-                selected: checked,
-            })),
-        );
-    };
+    const handleStudentToggle = (studentId: string) => {
+        if (!selectedBook) return;
 
-    const handleStudentCheck = (admNo: string, checked: boolean) => {
-        setStudents(students.map((student) => (student.admNo === admNo ? { ...student, selected: checked } : student)));
-        if (!checked && checkAll) setCheckAll(false);
-    };
-
-    const handleBookNumberChange = (admNo: string, value: string) => {
-        setStudents(students.map((student) => (student.admNo === admNo ? { ...student, bookNumber: value } : student)));
-    };
-
-    const handleFilterChange = (name: string, value: string) => {
-        setFilters({
-            ...filters,
-            [name]: value,
+        setStudentSelections((prev) => {
+            const newSelections = { ...prev };
+            if (newSelections[studentId]) {
+                delete newSelections[studentId];
+            } else if (remainingQuantity > 0) {
+                newSelections[studentId] = true;
+            }
+            return newSelections;
         });
     };
 
     const handleSubmit = () => {
-        const selectedStudents = students
-            .filter((student) => student.selected)
-            .filter((student)=>student.bookNumber != '')
-            .map((student) => ({
-                admNo: student.admNo,
-                name: student.name,
-                bookNumber: student.bookNumber,
+        if (!selectedBook) return;
+
+        const issuedBooks = Object.keys(studentSelections)
+            .filter((id) => bookNumbers[id]?.trim())
+            .map((id) => ({
+                studentId: id,
+                bookId: selectedBook.id,
+                bookNumber: bookNumbers[id],
             }));
 
-        console.log('Issuing books to:', selectedStudents);
-        // Add your API call here
+        console.log('Issuing:', issuedBooks);
+        // API call would go here
     };
 
     return (
@@ -88,86 +100,144 @@ export default function BookIssueForm() {
                         {/* Book Search Section */}
                         <div className="grid w-full justify-center gap-3">
                             <Input
-                                placeholder="Enter Book Name / title"
+                                placeholder="Search book by title or department"
                                 className="rounded-3xl"
-                                value={filters.search}
-                                onChange={(e) => handleFilterChange('search', e.target.value)}
+                                value={searchTerm}
+                                onChange={(e) => { setSearchTerm(e.target.value);  setSelectedBookId(-1)}}
                             />
-                            <div className="flex gap-5 font-black text-red-500">
-                                <span>{bookData.title}</span>
-                                <span>{bookData.grade}</span>
-                                <span>{bookData.available} available</span>
+                            {/* Book Cards Grid */}
+                            <div className="h-[145px] overflow-hidden">
+                                <ScrollArea className="h-full whitespace-nowrap">
+                                    <div className="grid md:grid-cols-2 gap-2 w-max space-x-4 p-4 ">
+                                        {filteredBooks.length > 0 ? (
+                                            filteredBooks.map((book) => (
+                                                <div
+                                                    key={book.id}
+                                                    className={`flex w-64 cursor-pointer flex-col gap-1 rounded-lg p-3 transition-all ${selectedBookId === book.id ? 'bg-gray-700/50' : 'bg-gray-700/20 hover:bg-gray-700/30'}`}
+                                                    onClick={() => { setSelectedBookId(book.id); setSearchTerm(book.title)}}
+                                                >
+                                                    <div className="font-medium">{book.title}</div>
+                                                    <div className="text-sm">Level: {book.level?.name || 'N/A'}</div>
+                                                    {book.subject?.name && <div className="text-sm">Subject: {book.subject.name}</div>}
+                                                    <div className="text-sm">Available: {book.quantity}</div>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className="w-full p-3 text-center text-gray-500">
+                                                {searchTerm ? 'No matching books found' : 'Search for a book to issue'}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <Scrollbar orientation='vertical'/>
+                                </ScrollArea>
                             </div>
-                            <div className="flex justify-between">
-                                <Select value={filters.class} onValueChange={(value) => handleFilterChange('class', value)}>
-                                    <SelectTrigger className="w-1/4 py-0">
-                                        <SelectValue placeholder="class"></SelectValue>
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="1 East">1 East</SelectItem>
-                                        <SelectItem value="1 West">1 West</SelectItem>
-                                        <SelectItem value="2 East">2 East</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <Input
-                                    placeholder="ADM.No"
-                                    className="w-1/4 py-0"
-                                    value={filters.admNo}
-                                    onChange={(e) => handleFilterChange('admNo', e.target.value)}
-                                />
-                            </div>
+                            {/* Selected Book Info */}
+                            {selectedBook && (
+                                <div className="flex flex-col gap-1 rounded-lg bg-gray-700/50 p-3">
+                                    <div className="font-medium">Selected: {selectedBook.title}</div>
+                                    <div className="text-sm">
+                                        Available: {remainingQuantity}/{selectedBook.quantity}
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
-                        {/* Student List with Checkboxes */}
-                        <div className="mt-6">
-                            <h3 className="mb-3 font-bold">Students</h3>
-                            <div className="overflow-hidden rounded-lg border">
-                                <Table className="w-full">
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead className="text-left">
-                                                Select<br></br>
-                                                <Checkbox checked={checkAll} onCheckedChange={handleCheckAll} className="mr-2" />
-                                            </TableHead>
-                                            <TableHead className="text-left">ADM No</TableHead>
-                                            <TableHead className="text-left">Name</TableHead>
-                                            <TableHead className="text-left">Class</TableHead>
-                                            <TableHead className="text-left">Book Number</TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody className='text-xs'>
-                                        {filteredStudents.map((student) => (
-                                            <TableRow key={student.admNo} className="border-t">
-                                                <TableCell className="">
+                        {/* Grade Filter */}
+                        <Select value={selectedGradeId} onValueChange={(e) => setSelectedGradeId(e)}>
+                            <SelectTrigger>
+                                <SelectValue className='uppercase' placeholder="Filter by grade" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {grades.map((grade) => (
+                                    <SelectItem key={grade.id} value={grade.id.toString()} className='uppercase'>
+                                        {grade.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
+                        {/* Students Table */}
+                        <div className="mt-4 overflow-hidden rounded-lg border">
+                            <Table>
+                                <TableHeader className="bg-gray-700/50">
+                                    <TableRow>
+                                        <TableHead className="w-12">
+                                            <Checkbox className='bg-gray-100'
+                                                checked={
+                                                    Object.keys(studentSelections).length > 0 &&
+                                                    Object.keys(studentSelections).length === filteredStudents.length
+                                                }
+                                                onCheckedChange={(checked) => {
+                                                    if (checked) {
+                                                        const newSelections: Record<string, boolean> = {};
+                                                        filteredStudents.forEach((student) => {
+                                                            if (Object.keys(newSelections).length < remainingQuantity) {
+                                                                newSelections[student.id] = true;
+                                                            }
+                                                        });
+                                                        setStudentSelections(newSelections);
+                                                    } else {
+                                                        setStudentSelections({});
+                                                    }
+                                                }}
+                                                disabled={!selectedBook || remainingQuantity <= 0}
+                                            />
+                                        </TableHead>
+                                        <TableHead>Name</TableHead>
+                                        <TableHead>Grade</TableHead>
+                                        <TableHead>Book Number</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {filteredStudents.length > 0 ? (
+                                        filteredStudents.map((student) => (
+                                            <TableRow key={student.id}>
+                                                <TableCell>
                                                     <Checkbox
-                                                        checked={student.selected}
-                                                        onCheckedChange={(checked) => handleStudentCheck(student.admNo, checked as boolean)}
+                                                        checked={!!studentSelections[student.id]}
+                                                        onCheckedChange={() => handleStudentToggle(student.id.toString())}
+                                                        disabled={!selectedBook || (!studentSelections[student.id] && remainingQuantity <= 0)}
                                                     />
                                                 </TableCell>
-                                                <TableCell className="">{student.admNo}</TableCell>
-                                                <TableCell className="">{student.name}</TableCell>
-                                                <TableCell className="">{student.class}</TableCell>
-                                                <TableCell className="">
+                                                <TableCell>
+                                                    {student.first_name} {student.sir_name}
+                                                </TableCell>
+                                                <TableCell>{student.grade?.name || 'N/A'}</TableCell>
+                                                <TableCell>
                                                     <Input
-                                                        type="text"
-                                                        placeholder="Enter book number"
-                                                        className="w-full rounded-none border-0 border-b-2 px-2 py-1 focus-visible:border-b-2 focus-visible:border-primary focus-visible:ring-0"
-                                                        value={student.bookNumber}
-                                                        onChange={(e) => handleBookNumberChange(student.admNo, e.target.value)}
-                                                        disabled={!student.selected}
+                                                        value={bookNumbers[student.id] || ''}
+                                                        onChange={(e) =>
+                                                            setBookNumbers((prev) => ({
+                                                                ...prev,
+                                                                [student.id]: e.target.value,
+                                                            }))
+                                                        }
+                                                        disabled={!studentSelections[student.id]}
+                                                        placeholder="Enter number"
+                                                        className="border-0 border-b-2 focus-visible:ring-0"
                                                     />
                                                 </TableCell>
                                             </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </div>
+                                        ))
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell colSpan={4} className="py-4 text-center">
+                                                {selectedGradeId === 'all' ? 'No students available' : 'No students in selected grade'}
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
                         </div>
 
                         {/* Submit Button */}
                         <div className="mt-4 flex justify-end">
-                            <Button className="rounded-3xl bg-blue-600 px-6 py-2 text-white hover:bg-blue-700" onClick={handleSubmit}>
-                                Issue Books
+                            <Button
+                                onClick={handleSubmit}
+                                disabled={!selectedBook || Object.keys(studentSelections).length === 0}
+                                className="rounded-3xl px-6 py-2"
+                            >
+                                Issue {Object.keys(studentSelections).length} Books
                             </Button>
                         </div>
                     </div>
