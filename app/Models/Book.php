@@ -9,7 +9,7 @@ class Book extends Model
     protected $fillable = [
         'title',
         'subject_id',
-        'quantity' ,
+        'quantity',
         'description',
         'cover_image',
         'level_id',
@@ -26,7 +26,8 @@ class Book extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function level(){
+    public function level()
+    {
         return $this->belongsTo(Level::class, 'level_id');
     }
     public function updatedByUser()
@@ -38,10 +39,15 @@ class Book extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    public function students(){
-        return $this->belongsToMany(Student::class, 'book_student', 'book_id', 'student_id')
-                    ->withTimestamps();
+    public function bookIssue()
+    {
+        return $this->hasMany(BookIssue::class);
     }
 
-    
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'book_student', 'book_id', 'student_id')
+            ->withPivot(['issued_at', 'returned_at', 'due_date', 'created_by', 'updated_by'])
+            ->withTimestamps();
+    }
 }

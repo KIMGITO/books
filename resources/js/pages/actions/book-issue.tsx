@@ -1,14 +1,19 @@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import { Book, Grade, Student } from '@/types';
+import { router, usePage } from '@inertiajs/react';
 import { Scrollbar } from '@radix-ui/react-scroll-area';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 interface BookIssueFormProps {
     books: Book[];
@@ -18,14 +23,35 @@ interface BookIssueFormProps {
 
 export default function BookIssueForm({ books = [], students = [], grades = [] }: BookIssueFormProps) {
     // State
-
+    const { error, success } = usePage().props;
     
+    useEffect(() => {
+        if (success) {
+              const message = success.toString();
+              const duration = Math.min(message.length * 100, 60000);
+             toast.success(success.toString(), {
+            duration: duration
+        });
+         }
+        
+        if (error) {
+             const message = error.toString();
+             const duration = Math.min(message.length * 100, 60000);
+            toast.error(error.toString(), {
+                duration: duration,
+            });
 
+        }
+
+    },[error, success])
+   
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedGradeId, setSelectedGradeId] = useState<string>(grades[0]?.id.toString());
+    const [selectedDueDate, setSelectedDueDate] = useState<string>(`${new Date().getFullYear()}-12-31`);
     const [studentSelections, setStudentSelections] = useState<Record<string, boolean>>({});
     const [bookNumbers, setBookNumbers] = useState<Record<string, string>>({});
     const [selectedBookId, setSelectedBookId] = useState<number | null>(null);
+    const [submitProgress, setSubmitProgress] = useState<number>(0)
 
     // Filter books by search term (title and department)
     const filteredBooks = useMemo(() => {
@@ -51,8 +77,7 @@ export default function BookIssueForm({ books = [], students = [], grades = [] }
 
     // Filter students by grade ID - FIXED VERSION
     const filteredStudents = useMemo(() => {
-        if (selectedGradeId === '1') return students;
-        console.log(students)
+       
         return students.filter((student) => student.grade_id.toString() === selectedGradeId);
     }, [students, selectedGradeId]);
 
@@ -77,19 +102,33 @@ export default function BookIssueForm({ books = [], students = [], grades = [] }
         });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: React.FormEvent) => {
+
+        e.preventDefault();
+
         if (!selectedBook) return;
 
-        const issuedBooks = Object.keys(studentSelections)
-            .filter((id) => bookNumbers[id]?.trim())
-            .map((id) => ({
-                studentId: id,
-                bookId: selectedBook.id,
-                bookNumber: bookNumbers[id],
-            }));
+       
+        
+       const issuedBooks = Object.keys(studentSelections)
+           .filter((id) => bookNumbers[id]?.trim())
+           .map((id) => ({
+               studentId: id,
+               bookId: selectedBook.id,
+               bookNumber: bookNumbers[id],
+               dueDate: selectedDueDate
+           }));
 
-        console.log('Issuing:', issuedBooks);
-        // API call would go here
+        router.post(
+            route('books-issue.store'),
+            {
+                data: issuedBooks,
+            },
+            {
+                onProgress: (event) => setSubmitProgress(Math.round((Number(event?.loaded) / Number(event?.total)) * 100)),
+            },
+        );
+        
     };
 
     return (
@@ -100,21 +139,28 @@ export default function BookIssueForm({ books = [], students = [], grades = [] }
                         {/* Book Search Section */}
                         <div className="grid w-full justify-center gap-3">
                             <Input
-                                placeholder="Search book by title or department"
+                                placeholder="Search book by book title"
                                 className="rounded-3xl"
                                 value={searchTerm}
-                                onChange={(e) => { setSearchTerm(e.target.value);  setSelectedBookId(-1)}}
+                                onChange={(e) => {
+                                    setSearchTerm(e.target.value);
+                                    setSelectedBookId(-1);
+                                }}
                             />
                             {/* Book Cards Grid */}
                             <div className="h-[145px] overflow-hidden">
+                                <Toaster  richColors position='top-center'/>
                                 <ScrollArea className="h-full whitespace-nowrap">
-                                    <div className="grid md:grid-cols-2 gap-2 w-max space-x-4 p-4 ">
+                                    <div className="grid w-max gap-2 space-x-4 p-4 md:grid-cols-2">
                                         {filteredBooks.length > 0 ? (
                                             filteredBooks.map((book) => (
                                                 <div
                                                     key={book.id}
                                                     className={`flex w-64 cursor-pointer flex-col gap-1 rounded-lg p-3 transition-all ${selectedBookId === book.id ? 'bg-gray-700/50' : 'bg-gray-700/20 hover:bg-gray-700/30'}`}
-                                                    onClick={() => { setSelectedBookId(book.id); setSearchTerm(book.title)}}
+                                                    onClick={() => {
+                                                        setSelectedBookId(book.id);
+                                                        setSearchTerm(book.title);
+                                                    }}
                                                 >
                                                     <div className="font-medium">{book.title}</div>
                                                     <div className="text-sm">Level: {book.level?.name || 'N/A'}</div>
@@ -128,7 +174,7 @@ export default function BookIssueForm({ books = [], students = [], grades = [] }
                                             </div>
                                         )}
                                     </div>
-                                    <Scrollbar orientation='vertical'/>
+                                    <Scrollbar orientation="vertical" />
                                 </ScrollArea>
                             </div>
                             {/* Selected Book Info */}
@@ -145,16 +191,29 @@ export default function BookIssueForm({ books = [], students = [], grades = [] }
                         {/* Grade Filter */}
                         <Select value={selectedGradeId} onValueChange={(e) => setSelectedGradeId(e)}>
                             <SelectTrigger>
-                                <SelectValue className='uppercase' placeholder="Filter by grade" />
+                                <SelectValue className="uppercase" placeholder="Filter by grade" />
                             </SelectTrigger>
                             <SelectContent>
                                 {grades.map((grade) => (
-                                    <SelectItem key={grade.id} value={grade.id.toString()} className='uppercase'>
+                                    <SelectItem key={grade.id} value={grade.id.toString()} className="uppercase">
                                         {grade.name}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
+
+                        {/* add return data  */}
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="selectedDueDate">Due Date</Label>
+                            <Input
+                                min={new Date().toISOString().split('T')[0]}
+                                value={selectedDueDate}
+                                onChange={(e) => setSelectedDueDate(e.target.value)}
+                                id="selectedDueDate"
+                                type="date"
+                            />{' '}
+                        </div>
 
                         {/* Students Table */}
                         <div className="mt-4 overflow-hidden rounded-lg border">
@@ -162,7 +221,8 @@ export default function BookIssueForm({ books = [], students = [], grades = [] }
                                 <TableHeader className="bg-gray-700/50">
                                     <TableRow>
                                         <TableHead className="w-12">
-                                            <Checkbox className='bg-gray-100'
+                                            <Checkbox
+                                                className="bg-gray-100"
                                                 checked={
                                                     Object.keys(studentSelections).length > 0 &&
                                                     Object.keys(studentSelections).length === filteredStudents.length
@@ -222,14 +282,15 @@ export default function BookIssueForm({ books = [], students = [], grades = [] }
                                     ) : (
                                         <TableRow>
                                             <TableCell colSpan={4} className="py-4 text-center">
-                                                {selectedGradeId === 'all' ? 'No students available' : 'No students in selected grade'}
+                                                {selectedGradeId === 'all' ? 'No students available' : 'No students in selected class'}
                                             </TableCell>
                                         </TableRow>
                                     )}
                                 </TableBody>
                             </Table>
                         </div>
-
+                        {/* submit progress */}
+                        <Progress value={submitProgress}/>
                         {/* Submit Button */}
                         <div className="mt-4 flex justify-end">
                             <Button

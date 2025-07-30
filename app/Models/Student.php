@@ -33,14 +33,21 @@ class Student extends Model
 
     }
 
+    public function bookIssue(){
+        return $this->hasMany(BookIssue::class);
+    }
+
     public function books(){
         return $this->belongsToMany(Book::class, 'book_student', 'student_id', 'book_id')
-                    ->withTimestamps();
+            ->withPivot(['issued_at', 'returned_at', 'due_date', 'created_by', 'updated_by'])
+            ->withTimestamps();
     }
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+
 
     
 }
